@@ -1,3 +1,4 @@
+import 'package:cinequest/movie_page.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -22,14 +23,19 @@ class trendingMovieSlider extends StatelessWidget {
           autoPlayCurve: Curves.easeInOutCirc,
         ),
         itemBuilder: (context, itemIndex, pageViewIndex) {
-          return ClipRRect(
-            borderRadius: BorderRadius.circular(15),
-            child: Container(
-              height: 300,
-              width: 200,
-              color: Color.fromARGB(255, 250, 178, 54),
+          return GestureDetector(
+            child:  ClipRRect(
+              borderRadius: BorderRadius.circular(15),
+              child: Container(
+                height: 300,
+                width: 200,
+                color: Color.fromARGB(255, 250, 178, 54),
+              ),
             ),
-          );
+            onTap: () {
+              Navigator.push(context,MaterialPageRoute(builder: (context) =>  MoviePage()));
+            }
+          );  
         } 
       ),
     );

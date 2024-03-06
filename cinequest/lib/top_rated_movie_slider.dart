@@ -1,3 +1,4 @@
+import 'package:cinequest/movie_page.dart';
 import 'package:flutter/material.dart';
 
 class topRatedMoviesSlider extends StatelessWidget {
@@ -18,18 +19,22 @@ class topRatedMoviesSlider extends StatelessWidget {
         itemBuilder:(context, index) {
           return Padding(
             padding: const EdgeInsets.all(10.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(15),
-              child: Container(
-                height: 200,
-                width: 150,
-                color: Color.fromARGB(255, 250, 178, 54),
+            child: GestureDetector(
+              child:  ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Container(
+                  height: 200,
+                  width: 150,
+                  color: Color.fromARGB(255, 250, 178, 54),
+                ),
               ),
-            ),
+              onTap: () {
+                Navigator.push(context,MaterialPageRoute(builder: (context) =>  MoviePage()));
+              }
+            )  
           );
         },
       ),
     );
   }
 }
-
