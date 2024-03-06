@@ -1,4 +1,4 @@
-import 'package:cinequest/app_drawer.dart';
+// import 'package:cinequest/app_drawer.dart';
 // import 'package:cinequest/logout_screen.dart';
 // import 'package:cinequest/setting_screen.dart';
 import 'package:flutter/material.dart';
@@ -8,14 +8,14 @@ import 'package:flutter/material.dart';
 // import 'package:cinequest/upcoming_movie_slider.dart';
 // import 'package:cinequest/saved_movies_screen.dart';
 
-class SettingsScreen extends StatefulWidget {
-   const SettingsScreen({super.key});
+class WatchMoviePage extends StatefulWidget {
+   const WatchMoviePage({super.key});
 
     @override
-    State<SettingsScreen> createState() => _SettingsScreen();
+    State<WatchMoviePage> createState() => _WatchMoviePage();
 }
 
-class _SettingsScreen extends State<SettingsScreen> {
+class _WatchMoviePage extends State<WatchMoviePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,13 +36,20 @@ class _SettingsScreen extends State<SettingsScreen> {
             padding: EdgeInsets.all(20.0),
             child: Column(
               children: [  
+                const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('WATCH MOVIE IN', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Colors.white)),
+                  ],
+                ),
+                const SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Expanded(
                       child: ElevatedButton(
                         onPressed: (){}, 
-                        child: const Text('ACCOUNT', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
+                        child: const Text('PRIME VIDEO', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
                         style: ElevatedButton.styleFrom(
                           primary: Color.fromARGB(255, 250, 178, 54),
                           onPrimary: Colors.white,
@@ -62,7 +69,7 @@ class _SettingsScreen extends State<SettingsScreen> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: (){}, 
-                        child: const Text('DISPLAY', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
+                        child: const Text('NETFLIX', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
                         style: ElevatedButton.styleFrom(
                           primary: Color.fromARGB(255, 250, 178, 54),
                           onPrimary: Colors.white,
@@ -82,7 +89,7 @@ class _SettingsScreen extends State<SettingsScreen> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: (){}, 
-                        child: const Text('NOTIFICATIONS', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
+                        child: const Text('DISNEY+', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
                         style: ElevatedButton.styleFrom(
                           primary: Color.fromARGB(255, 250, 178, 54),
                           onPrimary: Colors.white,
@@ -102,7 +109,7 @@ class _SettingsScreen extends State<SettingsScreen> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: (){}, 
-                        child: const Text('STORAGE', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
+                        child: const Text('HULU', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
                         style: ElevatedButton.styleFrom(
                           primary: Color.fromARGB(255, 250, 178, 54),
                           onPrimary: Colors.white,
@@ -122,7 +129,7 @@ class _SettingsScreen extends State<SettingsScreen> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: (){}, 
-                        child: const Text('VIDEO', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
+                        child: const Text('PARAMOUNT+', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
                         style: ElevatedButton.styleFrom(
                           primary: Color.fromARGB(255, 250, 178, 54),
                           onPrimary: Colors.white,
@@ -142,7 +149,7 @@ class _SettingsScreen extends State<SettingsScreen> {
                     Expanded(
                       child: ElevatedButton(
                         onPressed: (){}, 
-                        child: const Text('ABOUT', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
+                        child: const Text('BUY ON AMAZON', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
                         style: ElevatedButton.styleFrom(
                           primary: Color.fromARGB(255, 250, 178, 54),
                           onPrimary: Colors.white,
@@ -162,7 +169,7 @@ class _SettingsScreen extends State<SettingsScreen> {
                    Expanded(
                     child: ElevatedButton(
                       onPressed: (){}, 
-                      child: const Text('LOGOUT', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
+                      child: const Text('BUY ON YOUTUBE', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
                       style: ElevatedButton.styleFrom(
                         primary: Color.fromARGB(255, 250, 178, 54),
                         onPrimary: Colors.white,
@@ -180,7 +187,8 @@ class _SettingsScreen extends State<SettingsScreen> {
           ),
         ],
       ),
-      drawer: AppDrawer()
+      // drawer: AppDrawer()
     );
   }
 }
+
