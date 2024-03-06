@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:cinequest/home_screen.dart';
+import 'package:cinequest/sign_in_sign_up.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,8 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: const Color.fromARGB(255, 3, 35, 90), 
       ),
-      home: const HomeScreen(),
+      home: const SignInSignUpScreen(),
     );
   }
 }
-
