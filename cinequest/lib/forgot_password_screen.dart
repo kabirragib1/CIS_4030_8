@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cinequest/home_screen.dart'; // Import the HomeScreen widget
+import 'package:cinequest/home_screen.dart'; 
 
 class ForgotPasswordScreen extends StatelessWidget {
   @override
@@ -8,7 +8,7 @@ class ForgotPasswordScreen extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: true, // Keep the back arrow
         elevation: 0, // Remove the shadow
-        backgroundColor: Colors.transparent, // Set background color to transparent
+        backgroundColor: Colors.transparent, 
       ),
       extendBodyBehindAppBar: true, // Extend body behind app bar to cover the app bar
       body: SingleChildScrollView(
@@ -19,7 +19,7 @@ class ForgotPasswordScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 150.0), // Adjusted top padding for image
               child: Image.asset(
-                'assets/images/popcorn.png', // Path to your popcorn image
+                'assets/images/popcorn.png',
                 width: 150,
                 height: 150,
                 fit: BoxFit.contain,
@@ -40,12 +40,12 @@ class ForgotPasswordScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 80),
                   Align(
-                    alignment: Alignment.centerLeft, // Align text to the left
+                    alignment: Alignment.centerLeft,
                     child: Text(
                       'ENTER YOUR EMAIL',
                       style: TextStyle(
                         fontSize: 20,
-                        fontWeight: FontWeight.bold, // Make the text bold
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -87,7 +87,7 @@ class EnterPasscodeScreen extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: true, // Keep the back arrow
         elevation: 0, // Remove the shadow
-        backgroundColor: Colors.transparent, // Set background color to transparent
+        backgroundColor: Colors.transparent, 
       ),
       extendBodyBehindAppBar: true, // Extend body behind app bar to cover the app bar
       body: SingleChildScrollView(
@@ -98,7 +98,7 @@ class EnterPasscodeScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 150.0), // Adjusted top padding for image
               child: Image.asset(
-                'assets/images/popcorn.png', // Path to your popcorn image
+                'assets/images/popcorn.png', 
                 width: 150,
                 height: 150,
                 fit: BoxFit.contain,
@@ -119,12 +119,12 @@ class EnterPasscodeScreen extends StatelessWidget {
                   ),
                   SizedBox(height: 80),
                   Align(
-                    alignment: Alignment.centerLeft, // Align text to the left
+                    alignment: Alignment.centerLeft, 
                     child: Text(
                       'ENTER PASSCODE',
                       style: TextStyle(
                         fontSize: 20,
-                        fontWeight: FontWeight.bold, // Make the text bold
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
@@ -167,7 +167,7 @@ class NewPasswordScreen extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: true, // This will keep the back arrow
         title: Text(''), // Empty title to hide the header
-        backgroundColor: Colors.transparent, // Set background color to transparent
+        backgroundColor: Colors.transparent, 
         elevation: 0, // Remove the shadow
       ),
       body: SingleChildScrollView(

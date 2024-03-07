@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cinequest/login.dart'; // Import the login page
+import 'package:cinequest/login.dart'; 
 import 'package:cinequest/sing_up.dart';
 
 class SignInSignUpScreen extends StatelessWidget {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:cinequest/home_screen.dart'; // Import the HomeScreen widget
-import 'forgot_password_screen.dart'; // Import the ForgotPasswordScreen widget
+import 'package:cinequest/home_screen.dart'; 
+import 'forgot_password_screen.dart'; 
 
 class LoginPage extends StatelessWidget {
   @override
@@ -9,7 +9,7 @@ class LoginPage extends StatelessWidget {
       appBar: AppBar(
         automaticallyImplyLeading: true, // This will keep the back arrow
         title: Text(''), // Empty title to hide the header
-        backgroundColor: Colors.transparent, // Set background color to transparent
+        backgroundColor: Colors.transparent,
         elevation: 0, // Remove the shadow
       ),
       body: SingleChildScrollView(
