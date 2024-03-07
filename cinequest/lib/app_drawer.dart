@@ -1,7 +1,7 @@
 import 'package:cinequest/home_screen.dart';
-import 'package:cinequest/logout_screen.dart';
 import 'package:cinequest/saved_movies_screen.dart';
 import 'package:cinequest/setting_screen.dart';
+import 'package:cinequest/sign_in_sign_up.dart';
 import 'package:flutter/material.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -60,7 +60,7 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => LogoutScreen()),
+                MaterialPageRoute(builder: (context) => SignInSignUpScreen()),
               );
             },
             leading: const Icon(Icons.logout),

@@ -1,6 +1,9 @@
+import 'package:cinequest/constants.dart';
+import 'package:cinequest/movie_model.dart';
 import 'package:cinequest/movie_page.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:provider/provider.dart';
 
 class trendingMovieSlider extends StatelessWidget {
   const trendingMovieSlider({
@@ -9,10 +12,13 @@ class trendingMovieSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    final moviesListModel = Provider.of<MovieModel>(context);
+    final trendingMovies = moviesListModel.get_all_trending_movies;
+    return trendingMovies.isNotEmpty
+    ? SizedBox(
       width: double.infinity, 
       child: CarouselSlider.builder(
-        itemCount: 10, // show 10 movies 
+        itemCount: trendingMovies.length, 
         options: CarouselOptions(
           height: 300,
           autoPlay: true, // auto play the trending movies
@@ -23,21 +29,27 @@ class trendingMovieSlider extends StatelessWidget {
           autoPlayCurve: Curves.easeInOutCirc,
         ),
         itemBuilder: (context, itemIndex, pageViewIndex) {
-          return GestureDetector(
+          final trending_movie =  trendingMovies[itemIndex];
+           return GestureDetector(
             child:  ClipRRect(
               borderRadius: BorderRadius.circular(15),
-              child: Container(
+              child: SizedBox(
                 height: 300,
                 width: 200,
-                color: Color.fromARGB(255, 250, 178, 54),
+                child: Image.network(
+                  filterQuality: FilterQuality.high,
+                  fit: BoxFit.cover,
+                  '${Constants.image_path}${trending_movie.movie_image_path}'
+                )
               ),
             ),
             onTap: () {
-              Navigator.push(context,MaterialPageRoute(builder: (context) =>  MoviePage()));
+              Navigator.push(context,MaterialPageRoute(builder: (context) =>  MoviePage(movie_image_path: trending_movie.movie_image_path, movie_title: trending_movie.movie_title, movie_synopsis: trending_movie.movie_synopsis, movie_release_date: trending_movie.movie_release_date, movie_vote_avg: trending_movie.movie_vote_avg)));
             }
           );  
         } 
       ),
-    );
+    )
+    : Center(child: CircularProgressIndicator());
   }
 }

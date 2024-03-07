@@ -1,6 +1,7 @@
 // import 'package:cinequest/app_drawer.dart';
 // import 'package:cinequest/logout_screen.dart';
 // import 'package:cinequest/setting_screen.dart';
+import 'package:cinequest/constants.dart';
 import 'package:cinequest/watch_movie.dart';
 import 'package:flutter/material.dart';
 // import 'package:google_fonts/google_fonts.dart';
@@ -9,14 +10,14 @@ import 'package:flutter/material.dart';
 // import 'package:cinequest/upcoming_movie_slider.dart';
 // import 'package:cinequest/saved_movies_screen.dart';
 
-class ViewReviewPage extends StatefulWidget {
-   const ViewReviewPage({super.key});
+class ViewReviewPage extends StatelessWidget {
 
-    @override
-    State<ViewReviewPage> createState() => _ViewReviewPageState();
-}
+  final String movie_image_path; 
+  final String movie_title;
+  final double movie_vote_avg;
 
-class _ViewReviewPageState extends State<ViewReviewPage> {
+  ViewReviewPage({required this.movie_image_path, required this.movie_title, required this.movie_vote_avg});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,32 +37,29 @@ class _ViewReviewPageState extends State<ViewReviewPage> {
           SliverToBoxAdapter(
             child: Column(
               children: [
+                Center(child: Text(movie_title, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold))),
+                const SizedBox(height: 15.0),
+                Center(
+                  child: SizedBox(
+                    height: 300,
+                    width: 200,
+                    child: Image.network(
+                      filterQuality: FilterQuality.high,
+                      fit: BoxFit.cover,
+                      '${Constants.image_path}${movie_image_path}'
+                    )
+                  )
+                ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
+                    // Icon(Icons.star, color: Colors.yellow, size: 50.0),
+                    // Icon(Icons.star, color: Colors.yellow, size: 50.0),
+                    // Icon(Icons.star, color: Colors.yellow, size: 50.0)
+                    Padding(
                       padding: EdgeInsets.all(10.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('Movie Title', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                          SizedBox(height: 25),
-                        ]
-                      ),
-                    ),
-                    Container(
-                      height: 300,
-                      width: 150,
-                      color: Color.fromARGB(255, 250, 178, 54),
-                    ),
-                  ]
-                ),
-                const Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Icon(Icons.star, color: Colors.yellow, size: 50.0),
-                    Icon(Icons.star, color: Colors.yellow, size: 50.0),
-                    Icon(Icons.star, color: Colors.yellow, size: 50.0)
+                      child:  Text('FILM SCORE: ' + movie_vote_avg.toStringAsFixed(2) + '/10.0', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold))
+                    )
                   ]
                 ),
                 const Divider(
@@ -88,9 +86,9 @@ class _ViewReviewPageState extends State<ViewReviewPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('IMDB:', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
-                          Text('ROTTEN TOMATOES:', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
-                          Text('METACRITIC:', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
+                          Text('IMDB:', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal)),
+                          Text('ROTTEN TOMATOES:', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal)),
+                          Text('METACRITIC:', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal)),
                         ],
                       ),
                     )
