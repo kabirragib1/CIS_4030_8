@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cinequest/login.dart'; // Import the login page
+import 'package:cinequest/sing_up.dart';
 
 class SignInSignUpScreen extends StatelessWidget {
   const SignInSignUpScreen({Key? key}) : super(key: key);
@@ -60,7 +61,10 @@ class SignInSignUpScreen extends StatelessWidget {
             SizedBox(height: 40),
             ElevatedButton(
               onPressed: () {
-                // Handle Sign Up button press
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SignUp()),
+                );
               },
               style: ElevatedButton.styleFrom(
                 minimumSize: Size(300, 50),
