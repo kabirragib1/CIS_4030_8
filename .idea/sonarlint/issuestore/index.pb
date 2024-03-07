@@ -49,3 +49,9 @@ Q
 !cinequest/lib/setting_screen.dart,8\4\84c6458c975337f6abc2067e8c681ccd0724c405
 N
 cinequest/lib/watch_movie.dart,0\e\0ecc33721f6fd78bf7dd734bfa85d2a78d6f681b
+Q
+!cinequest/lib/movie_interact.dart,f\9\f977f1285402ac56d59f57465a180bcd1909f5de
+M
+cinequest/lib/movie_quiz.dart,0\1\01951fc30a8609bca4b4f0cb218f6cf548bee7dd
+X
+(cinequest/lib/movie_quiz_transition.dart,e\3\e3ade8c1b0d4a61fd08cf225c17dfe9e642ccb84
