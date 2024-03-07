@@ -19,3 +19,5 @@ J
 cinequest/lib/sing_up.dart,0\d\0d6177878314c9cd7f773211e16096ce29ea3218
 H
 cinequest/lib/login.dart,2\e\2ee0ca79d8b171692e7ed9634cbd35db69c8bb36
+L
+cinequest/lib/sign_quiz.dart,0\5\05297e19394e7f97a988c645a8ad357c30e170cd
