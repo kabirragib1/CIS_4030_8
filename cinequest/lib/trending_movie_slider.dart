@@ -44,7 +44,7 @@ class trendingMovieSlider extends StatelessWidget {
               ),
             ),
             onTap: () {
-              Navigator.push(context,MaterialPageRoute(builder: (context) =>  MoviePage(movie_image_path: trending_movie.movie_image_path, movie_title: trending_movie.movie_title, movie_synopsis: trending_movie.movie_synopsis, movie_release_date: trending_movie.movie_release_date, movie_vote_avg: trending_movie.movie_vote_avg)));
+              Navigator.push(context,MaterialPageRoute(builder: (context) =>  MoviePage(movie_image_path: trending_movie.movie_image_path, movie_title: trending_movie.movie_title, movie_synopsis: trending_movie.movie_synopsis, movie_release_date: trending_movie.movie_release_date, movie_vote_avg: trending_movie.movie_vote_avg, movieId: trending_movie.id)));
             }
           );  
         } 

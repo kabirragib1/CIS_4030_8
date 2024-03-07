@@ -1,22 +1,52 @@
-// import 'package:cinequest/app_drawer.dart';
-// import 'package:cinequest/logout_screen.dart';
-// import 'package:cinequest/setting_screen.dart';
-import 'package:cinequest/constants.dart';
-import 'package:cinequest/watch_movie.dart';
+import 'dart:convert';
 import 'package:flutter/material.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import 'package:cinequest/trending_movie_slider.dart';
-// import 'package:cinequest/top_rated_movie_slider.dart';
-// import 'package:cinequest/upcoming_movie_slider.dart';
-// import 'package:cinequest/saved_movies_screen.dart';
+import 'package:http/http.dart' as http;
+import 'package:cinequest/constants.dart';
 
-class ViewReviewPage extends StatelessWidget {
-
-  final String movie_image_path; 
+class ViewReviewPage extends StatefulWidget {
+  final String movie_image_path;
   final String movie_title;
   final double movie_vote_avg;
+  final int movieId;
 
-  ViewReviewPage({required this.movie_image_path, required this.movie_title, required this.movie_vote_avg});
+  ViewReviewPage({
+    required this.movie_image_path,
+    required this.movie_title,
+    required this.movie_vote_avg,
+    required this.movieId,
+  });
+
+  @override
+  _ViewReviewPageState createState() => _ViewReviewPageState();
+}
+
+class _ViewReviewPageState extends State<ViewReviewPage> {
+  List<dynamic> reviews = [];
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchReviews();
+  }
+
+  Future<void> fetchReviews() async {
+    final response = await http.get(
+      Uri.parse('https://api.themoviedb.org/3/movie/${widget.movieId}/reviews?api_key=${Constants.API_key}&language=en-US&page=1'),
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        reviews = jsonDecode(response.body)['results'];
+        isLoading = false;
+      });
+    } else {
+      setState(() {
+        isLoading = false;
+      });
+      print('Failed to load reviews: ${response.body}');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,36 +61,28 @@ class ViewReviewPage extends StatelessWidget {
           filterQuality: FilterQuality.high,
         ),
         centerTitle: true,
-      ), 
+      ),
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
             child: Column(
               children: [
-                Center(child: Text(movie_title, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold))),
+                Center(child: Text(widget.movie_title, style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold))),
                 const SizedBox(height: 15.0),
                 Center(
-                  child: SizedBox(
-                    height: 300,
-                    width: 200,
-                    child: Image.network(
-                      filterQuality: FilterQuality.high,
-                      fit: BoxFit.cover,
-                      '${Constants.image_path}${movie_image_path}'
+                    child: SizedBox(
+                        height: 300,
+                        width: 200,
+                        child: Image.network(
+                          '${Constants.image_path}${widget.movie_image_path}',
+                          fit: BoxFit.cover,
+                          filterQuality: FilterQuality.high,
+                        )
                     )
-                  )
                 ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // Icon(Icons.star, color: Colors.yellow, size: 50.0),
-                    // Icon(Icons.star, color: Colors.yellow, size: 50.0),
-                    // Icon(Icons.star, color: Colors.yellow, size: 50.0)
-                    Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child:  Text('FILM SCORE: ' + movie_vote_avg.toStringAsFixed(2) + '/10.0', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold))
-                    )
-                  ]
+                Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text('FILM SCORE: ${widget.movie_vote_avg.toStringAsFixed(2)}/10.0', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold))
                 ),
                 const Divider(
                   thickness: 3.0,
@@ -69,104 +91,49 @@ class ViewReviewPage extends StatelessWidget {
                   color: Colors.white,
                   height: 15.0,
                 ),
-                const Row (
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child:  Text('CRITIC SCORES:', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                    )
-                  ],
-                ),
-                const Row (
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('IMDB:', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal)),
-                          Text('ROTTEN TOMATOES:', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal)),
-                          Text('METACRITIC:', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal)),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-                const Divider(
-                  thickness: 3.0,
-                  indent: 10.0,
-                  endIndent: 10.0,
-                  color: Colors.white,
-                  height: 15.0,
-                ),
-                const Padding (
+                Padding(
                   padding: EdgeInsets.all(10.0),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('AUDIENCE REVIEWS:', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold))
-                    ]
-                  ) 
+                  child: Text('AUDIENCE REVIEWS:', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
                 ),
               ],
             ),
           ),
           SliverPadding(
             padding: const EdgeInsets.all(10.0),
-            sliver: SliverGrid(
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 1,
-                crossAxisSpacing: 4.0,
-                mainAxisSpacing: 20.0,
-                childAspectRatio: 5.0,
-              ),
+            sliver: isLoading ? SliverToBoxAdapter(child: Center(child: CircularProgressIndicator())) : SliverList(
               delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  return ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: Container(
-                      color: Color.fromARGB(255, 196, 129, 13),
-                      child: const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  'MOVIE REVIEWER'
-                                ),
-                              ),
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: Row(
-                                  children: [
-                                    Icon(Icons.star, color: Colors.yellow),
-                                    Icon(Icons.star, color: Colors.yellow),
-                                    Icon(Icons.star, color: Colors.yellow)
-                                  ]
-                                ),
-                              
-                              )
-                            ],
-                          ),
-                          SizedBox(height: 10.0),
-                          Text('TEXT OF THE MOVIE REVIEW')
-                        ],
-                      ),
-                    )
-                  );  
+                    (context, index) {
+                  final review = reviews[index];
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          review['author'] ?? 'Unknown',
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                        SizedBox(height: 5),
+                        Row(
+                          children: List.generate(5, (starIndex) {
+                            return Icon(
+                              starIndex < (review['author_details']['rating'] ?? 0) / 2 ? Icons.star : Icons.star_border,
+                              color: Colors.yellow,
+                            );
+                          }),
+                        ),
+                        SizedBox(height: 10),
+                        Text(review['content'] ?? 'No review text.'),
+                      ],
+                    ),
+                  );
                 },
-                childCount: 3,
+                childCount: reviews.length,
               ),
             ),
           ),
-        ]
+        ],
       ),
     );
   }
 }
-

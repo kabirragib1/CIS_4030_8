@@ -18,8 +18,9 @@ class MoviePage extends StatelessWidget {
   final String movie_synopsis;
   final String movie_release_date;
   final double movie_vote_avg;
+  final int movieId;
 
-  MoviePage({required this.movie_image_path, required this.movie_title, required this.movie_synopsis, required this.movie_release_date, required this.movie_vote_avg});
+  MoviePage({required this.movie_image_path, required this.movie_title, required this.movie_synopsis, required this.movie_release_date, required this.movie_vote_avg, required this.movieId});
   
   @override
   Widget build(BuildContext context) {
@@ -145,7 +146,7 @@ class MoviePage extends StatelessWidget {
                 const SizedBox(height: 15),
                 ElevatedButton(
                   onPressed: (){
-                    Navigator.push(context,MaterialPageRoute(builder: (context) =>  ViewReviewPage(movie_image_path: movie_image_path, movie_title: movie_title, movie_vote_avg: movie_vote_avg)));
+                    Navigator.push(context,MaterialPageRoute(builder: (context) =>  ViewReviewPage(movie_image_path: movie_image_path, movie_title: movie_title, movie_vote_avg: movie_vote_avg, movieId: movieId)));
                   }, 
                   child: const Text('VIEW REVIEWS', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
                   style: ElevatedButton.styleFrom(

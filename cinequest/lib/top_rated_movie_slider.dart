@@ -29,7 +29,7 @@ class topRatedMoviesSlider extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
             child: GestureDetector(
               onTap: () {
-                Navigator.push(context,MaterialPageRoute(builder: (context) =>  MoviePage(movie_image_path: top_rated_movie.movie_image_path, movie_title: top_rated_movie.movie_title, movie_synopsis: top_rated_movie.movie_synopsis, movie_release_date: top_rated_movie.movie_release_date, movie_vote_avg: top_rated_movie.movie_vote_avg)));
+                Navigator.push(context,MaterialPageRoute(builder: (context) =>  MoviePage(movie_image_path: top_rated_movie.movie_image_path, movie_title: top_rated_movie.movie_title, movie_synopsis: top_rated_movie.movie_synopsis, movie_release_date: top_rated_movie.movie_release_date, movie_vote_avg: top_rated_movie.movie_vote_avg, movieId: top_rated_movie.id)));
               },  
               child:  ClipRRect(
                 borderRadius: BorderRadius.circular(15),
