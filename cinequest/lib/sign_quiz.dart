@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cinequest/home_screen.dart'; // Import the HomeScreen widget
+import 'package:cinequest/sign_transition.dart'; // Import the Transition widget
 
 class SignUpQuiz extends StatefulWidget {
   @override
@@ -80,7 +81,7 @@ class _SignUpQuizState extends State<SignUpQuiz> {
                   // Define what happens when the button is pressed
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                    MaterialPageRoute(builder: (context) => SignTransition()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
