@@ -1,5 +1,6 @@
+import 'package:cinequest/movie_model.dart';
 import 'package:cinequest/app_drawer.dart';
-import 'package:cinequest/logout_screen.dart';
+import 'package:cinequest/movie.dart';
 import 'package:cinequest/setting_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,6 +8,7 @@ import 'package:cinequest/trending_movie_slider.dart';
 import 'package:cinequest/top_rated_movie_slider.dart';
 import 'package:cinequest/upcoming_movie_slider.dart';
 import 'package:cinequest/saved_movies_screen.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
    const HomeScreen({super.key});
@@ -15,9 +17,21 @@ class HomeScreen extends StatefulWidget {
     State<HomeScreen> createState() => _HomeScreenState();
 }
 
+// late Future<List<Movie>> trending_movies;
+
 class _HomeScreenState extends State<HomeScreen> {
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   trending_movies = MovieModel().get_trending_movies();
+  //   print('Hello');
+  // }
   @override
   Widget build(BuildContext context) {
+    final moviesListModel = Provider.of<MovieModel>(context);
+    final all_trending_movies = moviesListModel.get_all_trending_movies;
+    // late Future<List<Movie>> trending_movies = all_trending_movies as Future<List<Movie>>;
+    // print(moviesListModel.get_all_trending_movies[0].movie_title);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -42,7 +56,27 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: GoogleFonts.quicksand(fontSize: 25, fontWeight: FontWeight.w500),
               ),
             const SizedBox(height: 35),
+          //  moviesListModel.get_trending_movies_loaded
+          //   ? const trendingMovieSlider()
+          //   : const Center(child: CircularProgressIndicator()), 
+            
             const trendingMovieSlider(),
+            // SizedBox(
+            //   child: FutureBuilder(
+            //     future: trending_movies, 
+            //     builder: (context, snapshot) {
+            //       if (snapshot.hasError) {
+            //         return Center(
+            //           child: Text(snapshot.error.toString()),
+            //         );
+            //       } else if (snapshot.hasData) {
+            //         return const trendingMovieSlider();
+            //       } else {
+            //         return const Center(child: CircularProgressIndicator());
+            //       }
+            //     }
+            //   )
+            // ),
             const SizedBox(height: 35),
             Text(
               'Top Rated Movies',
@@ -50,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 35),
             // list of scrollable widgets 
-            topRatedMoviesSlider(),
+            const topRatedMoviesSlider(),
             const SizedBox(height: 35),
             Text(
               'Upcoming Movies',

@@ -1,8 +1,15 @@
+import 'package:cinequest/movie_model.dart';
 import 'package:flutter/material.dart';
 import 'package:cinequest/sign_in_sign_up.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+   ChangeNotifierProvider(
+      create: (context) => MovieModel(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
