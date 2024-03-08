@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:async';
 import 'package:cinequest/constants.dart';
 import 'package:cinequest/movie.dart';
 import 'package:flutter/material.dart';
@@ -27,15 +28,43 @@ class MovieModel extends ChangeNotifier{
   List<Movie> savedMovies = [];
 
   //saving movies
-  void toggleFavorite(Movie movie) {
-    movie.isFavorite = !movie.isFavorite;
-    if (movie.isFavorite) {
-      savedMovies.add(movie);
-    } else {
-      savedMovies.removeWhere((savedMovie) => savedMovie.id == movie.id);
-    }
-    notifyListeners();
+// Modify the toggleFavorite method to accept BuildContext
+
+void toggleFavorite(BuildContext context, Movie movie) {
+  movie.isFavorite = !movie.isFavorite;
+  String message;
+  if (movie.isFavorite) {
+    savedMovies.add(movie);
+    message = 'Movie Saved';
+  } else {
+    savedMovies.removeWhere((savedMovie) => savedMovie.id == movie.id);
+    message = 'Movie Removed';
   }
+  notifyListeners();
+
+  // Show the AlertDialog with larger font size
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(10))
+        ),
+        content: Text(
+          message,
+          style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 20), 
+          textAlign: TextAlign.center, // Customize the font size here
+        ),
+      );
+    },
+  );
+
+  // Close the AlertDialog after 2 seconds
+  Timer(Duration(seconds: 2), () {
+    Navigator.of(context, rootNavigator: true).pop('dialog');
+  });
+}
 
   MovieModel() {
     get_trending_movies();

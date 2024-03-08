@@ -87,7 +87,7 @@ class _FavoriteIconState extends State<FavoriteIcon> {
     bool isFavorite = widget.movie.isFavorite;
     return GestureDetector(
       onTap: () {
-        Provider.of<MovieModel>(context, listen: false).toggleFavorite(widget.movie);
+        Provider.of<MovieModel>(context, listen: false).toggleFavorite(context, widget.movie);
       },
       child: Icon(
         isFavorite ? Icons.favorite : Icons.favorite_border,

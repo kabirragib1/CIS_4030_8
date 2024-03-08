@@ -1,13 +1,10 @@
 import 'package:cinequest/movie_model.dart';
 import 'package:cinequest/app_drawer.dart';
-import 'package:cinequest/movie.dart';
-import 'package:cinequest/setting_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cinequest/trending_movie_slider.dart';
 import 'package:cinequest/top_rated_movie_slider.dart';
 import 'package:cinequest/upcoming_movie_slider.dart';
-import 'package:cinequest/saved_movies_screen.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {

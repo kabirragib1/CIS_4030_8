@@ -61,7 +61,7 @@ class UpcomingMoviesSlider extends StatelessWidget {
                           child: FavoriteIcon(
                             isFavorite: upcoming_movie.isFavorite,
                             onFavoriteChanged: (isFavorite) {
-                              moviesListModel.toggleFavorite(upcoming_movie);
+                              moviesListModel.toggleFavorite(context, upcoming_movie);
                             },
                           ),
                         ),

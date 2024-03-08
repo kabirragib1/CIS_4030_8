@@ -77,7 +77,7 @@ class _TrendingMovieSliderState extends State<TrendingMovieSlider> {
                                   !isHeartClickedList[itemIndex];
                             });
                             // Toggle favorite state in MovieModel
-                            moviesListModel.toggleFavorite(trendingMovie);
+                            moviesListModel.toggleFavorite(context, trendingMovie);
                           },
                         ),
                       ),
