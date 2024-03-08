@@ -19,7 +19,7 @@ class ForgotPasswordScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 150.0), // Adjusted top padding for image
               child: Image.asset(
-                'assets/images/popcorn.png',
+                'assets/images/movie_4831192.png',
                 width: 150,
                 height: 150,
                 fit: BoxFit.contain,
@@ -98,7 +98,7 @@ class EnterPasscodeScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 150.0), // Adjusted top padding for image
               child: Image.asset(
-                'assets/images/popcorn.png', 
+                'assets/images/movie_4831192.png', 
                 width: 150,
                 height: 150,
                 fit: BoxFit.contain,
@@ -178,7 +178,7 @@ class NewPasswordScreen extends StatelessWidget {
             SizedBox(height: 40), // Add some space at the top
             Center(
               child: Image.asset(
-                'assets/images/popcorn.png',
+                'assets/images/movie_4831192.png',
                 width: 150,
                 height: 150,
                 fit: BoxFit.contain,

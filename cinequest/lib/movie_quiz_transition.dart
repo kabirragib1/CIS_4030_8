@@ -35,7 +35,7 @@ class _MovieTransitionState extends State<MovieTransition> {
         children: [
           SizedBox(height: 40), // This will be at the top of the column
           Image.asset(
-            'assets/images/popcorn.png',
+            'assets/images/movie_4831192.png',
             width: 150,
             height: 150,
             fit: BoxFit.contain,

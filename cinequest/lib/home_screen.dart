@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
           //   ? const trendingMovieSlider()
           //   : const Center(child: CircularProgressIndicator()), 
             
-            const trendingMovieSlider(),
+            const TrendingMovieSlider(),
             // SizedBox(
             //   child: FutureBuilder(
             //     future: trending_movies, 
@@ -84,14 +84,14 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 35),
             // list of scrollable widgets 
-            const topRatedMoviesSlider(),
+            const TopRatedMoviesSlider(),
             const SizedBox(height: 35),
             Text(
               'Upcoming Movies',
               style: GoogleFonts.quicksand(fontSize: 25, fontWeight: FontWeight.w500)
             ),
             const SizedBox(height: 35),
-            upcomingMoviesSlider()
+            UpcomingMoviesSlider()
           ],
         ),
       ),
@@ -101,4 +101,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
