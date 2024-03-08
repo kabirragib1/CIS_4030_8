@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 class MovieModel extends ChangeNotifier{
   static const trending_movie_URL = 'https://api.themoviedb.org/3/trending/movie/day?api_key=${Constants.API_key}';
   static const top_rated_movie_URL = 'https://api.themoviedb.org/3/movie/top_rated?api_key=${Constants.API_key}';
-   static const upcoming_movie_URL = 'https://api.themoviedb.org/3/movie/upcoming?api_key=${Constants.API_key}';
+  static const upcoming_movie_URL = 'https://api.themoviedb.org/3/movie/upcoming?api_key=${Constants.API_key}';
 
   List<Movie> all_trending_movies = [];
   List<Movie> get get_all_trending_movies => all_trending_movies;
@@ -23,6 +23,19 @@ class MovieModel extends ChangeNotifier{
   List<Movie> get get_all_upcoming_movies => all_upcoming_movies;
   bool upcoming_movies_loaded = true;
   bool get get_upcoming_movies_loaded=> upcoming_movies_loaded;
+
+  List<Movie> savedMovies = [];
+
+  //saving movies
+  void toggleFavorite(Movie movie) {
+    movie.isFavorite = !movie.isFavorite;
+    if (movie.isFavorite) {
+      savedMovies.add(movie);
+    } else {
+      savedMovies.removeWhere((savedMovie) => savedMovie.id == movie.id);
+    }
+    notifyListeners();
+  }
 
   MovieModel() {
     get_trending_movies();

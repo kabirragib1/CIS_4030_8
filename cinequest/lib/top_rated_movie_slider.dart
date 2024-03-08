@@ -3,7 +3,7 @@ import 'package:cinequest/movie_model.dart';
 import 'package:cinequest/movie_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:cinequest/movie.dart'; 
 class TopRatedMoviesSlider extends StatelessWidget {
   const TopRatedMoviesSlider({
     Key? key,
@@ -59,7 +59,7 @@ class TopRatedMoviesSlider extends StatelessWidget {
                         Positioned(
                           top: 5,
                           right: 5,
-                          child: FavoriteIcon(),
+                          child: FavoriteIcon(top_rated_movie), // Pass the Movie object here
                         ),
                       ],
                     ),
@@ -73,20 +73,21 @@ class TopRatedMoviesSlider extends StatelessWidget {
 }
 
 class FavoriteIcon extends StatefulWidget {
+  final Movie movie;
+
+  FavoriteIcon(this.movie);
+
   @override
   _FavoriteIconState createState() => _FavoriteIconState();
 }
 
 class _FavoriteIconState extends State<FavoriteIcon> {
-  bool isFavorite = false;
-
   @override
   Widget build(BuildContext context) {
+    bool isFavorite = widget.movie.isFavorite;
     return GestureDetector(
       onTap: () {
-        setState(() {
-          isFavorite = !isFavorite;
-        });
+        Provider.of<MovieModel>(context, listen: false).toggleFavorite(widget.movie);
       },
       child: Icon(
         isFavorite ? Icons.favorite : Icons.favorite_border,
@@ -96,3 +97,4 @@ class _FavoriteIconState extends State<FavoriteIcon> {
     );
   }
 }
+

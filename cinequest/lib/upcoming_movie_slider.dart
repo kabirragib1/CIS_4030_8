@@ -19,9 +19,8 @@ class UpcomingMoviesSlider extends StatelessWidget {
             width: double.infinity,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              // apply scroll effects
               physics: const BouncingScrollPhysics(),
-              itemCount: upcomingMovies.length, // show 10 movies
+              itemCount: upcomingMovies.length,
               itemBuilder: (context, index) {
                 final upcoming_movie = upcomingMovies[index];
                 return Padding(
@@ -59,7 +58,12 @@ class UpcomingMoviesSlider extends StatelessWidget {
                         Positioned(
                           top: 5,
                           right: 5,
-                          child: FavoriteIcon(), // Use a stateful widget for the favorite icon
+                          child: FavoriteIcon(
+                            isFavorite: upcoming_movie.isFavorite,
+                            onFavoriteChanged: (isFavorite) {
+                              moviesListModel.toggleFavorite(upcoming_movie);
+                            },
+                          ),
                         ),
                       ],
                     ),
@@ -72,27 +76,27 @@ class UpcomingMoviesSlider extends StatelessWidget {
   }
 }
 
-class FavoriteIcon extends StatefulWidget {
-  @override
-  _FavoriteIconState createState() => _FavoriteIconState();
-}
+class FavoriteIcon extends StatelessWidget {
+  final bool isFavorite;
+  final Function(bool) onFavoriteChanged;
 
-class _FavoriteIconState extends State<FavoriteIcon> {
-  bool isFavorite = false;
+  const FavoriteIcon({
+    required this.isFavorite,
+    required this.onFavoriteChanged,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          isFavorite = !isFavorite; // Toggle the favorite state
-        });
+        onFavoriteChanged(!isFavorite);
       },
       child: Icon(
-        isFavorite ? Icons.favorite : Icons.favorite_border, // Change icon based on favorite state
-        color: isFavorite ? Colors.red : Colors.white, // Change the color based on favorite state
-        size: 24, // Customize the size if needed
+        isFavorite ? Icons.favorite : Icons.favorite_border,
+        color: isFavorite ? Colors.red : Colors.white,
+        size: 24,
       ),
     );
   }
 }
+
