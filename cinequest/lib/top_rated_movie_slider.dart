@@ -16,7 +16,7 @@ class TopRatedMoviesSlider extends StatelessWidget {
 
     return topRatedMovies.isNotEmpty
         ? SizedBox(
-            height: 200,
+            height: 250,
             width: double.infinity,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
@@ -46,7 +46,7 @@ class TopRatedMoviesSlider extends StatelessWidget {
                     child: Stack(
                       children: [
                         Container(
-                          height: 200,
+                          height: 250,
                           width: 150,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(15),

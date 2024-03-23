@@ -159,41 +159,41 @@ class MoviePage extends StatelessWidget {
                           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Button padding
                         )
                     ),
-                    const SizedBox(height: 15),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ElevatedButton(
-                              onPressed: (){
-                                Navigator.push(context,MaterialPageRoute(builder: (context) =>  WatchMoviePage()));
-                              },
-                              child: Text('WATCH', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
-                              style: ElevatedButton.styleFrom(
-                                primary: Color.fromARGB(255, 250, 178, 54),
-                                onPrimary: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50), // Rounded corners
-                                ),
-                                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Button padding
-                              )
-                          ),
-                          const SizedBox(width: 15),
-                          ElevatedButton(
-                              onPressed: (){
-                                Navigator.push(context,MaterialPageRoute(builder: (context) =>  MovieInteract(movie_image_path: movie_image_path, movie_title: movie_title, movie_vote_avg: movie_vote_avg)));
-                              },
-                              child: Text('INTERACT', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
-                              style: ElevatedButton.styleFrom(
-                                primary: Color.fromARGB(255, 250, 178, 54),
-                                onPrimary: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50), // Rounded corners
-                                ),
-                                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Button padding
-                              )
-                          ),
-                        ]
-                    )
+                    // const SizedBox(height: 15),
+                    // Row(
+                    //     mainAxisAlignment: MainAxisAlignment.center,
+                    //     children: [
+                    //       ElevatedButton(
+                    //           onPressed: (){
+                    //             Navigator.push(context,MaterialPageRoute(builder: (context) =>  WatchMoviePage()));
+                    //           },
+                    //           child: Text('WATCH', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
+                    //           style: ElevatedButton.styleFrom(
+                    //             primary: Color.fromARGB(255, 250, 178, 54),
+                    //             onPrimary: Colors.white,
+                    //             shape: RoundedRectangleBorder(
+                    //               borderRadius: BorderRadius.circular(50), // Rounded corners
+                    //             ),
+                    //             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Button padding
+                    //           )
+                    //       ),
+                    //       const SizedBox(width: 15),
+                    //       ElevatedButton(
+                    //           onPressed: (){
+                    //             Navigator.push(context,MaterialPageRoute(builder: (context) =>  MovieInteract(movie_image_path: movie_image_path, movie_title: movie_title, movie_vote_avg: movie_vote_avg)));
+                    //           },
+                    //           child: Text('INTERACT', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
+                    //           style: ElevatedButton.styleFrom(
+                    //             primary: Color.fromARGB(255, 250, 178, 54),
+                    //             onPrimary: Colors.white,
+                    //             shape: RoundedRectangleBorder(
+                    //               borderRadius: BorderRadius.circular(50), // Rounded corners
+                    //             ),
+                    //             padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Button padding
+                    //           )
+                    //       ),
+                    //     ]
+                    // )
                   ]
               )
           ),

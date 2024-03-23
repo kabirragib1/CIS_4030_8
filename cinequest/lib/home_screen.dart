@@ -1,5 +1,6 @@
 import 'package:cinequest/movie_model.dart';
 import 'package:cinequest/app_drawer.dart';
+import 'package:cinequest/now_playing_movie_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:cinequest/trending_movie_slider.dart';
@@ -88,7 +89,14 @@ class _HomeScreenState extends State<HomeScreen> {
               style: GoogleFonts.quicksand(fontSize: 25, fontWeight: FontWeight.w500)
             ),
             const SizedBox(height: 35),
-            UpcomingMoviesSlider()
+            UpcomingMoviesSlider(),
+            const SizedBox(height: 35),
+            Text(
+              'Now Playing Movies',
+              style: GoogleFonts.quicksand(fontSize: 25, fontWeight: FontWeight.w500)
+            ),
+            const SizedBox(height: 35),
+            NowPlayingMoviesSlider()
           ],
         ),
       ),

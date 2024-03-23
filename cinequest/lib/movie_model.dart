@@ -9,6 +9,9 @@ class MovieModel extends ChangeNotifier{
   static const trending_movie_URL = 'https://api.themoviedb.org/3/trending/movie/day?api_key=${Constants.API_key}';
   static const top_rated_movie_URL = 'https://api.themoviedb.org/3/movie/top_rated?api_key=${Constants.API_key}';
   static const upcoming_movie_URL = 'https://api.themoviedb.org/3/movie/upcoming?api_key=${Constants.API_key}';
+  // static const upcoming_movie_URL = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_release_type=2|3&release_date.gte={min_date}&release_date.lte={max_date}&api_key=${Constants.API_key}';
+  static const now_playing_movie_URL = 'https://api.themoviedb.org/3/movie/now_playing?api_key=${Constants.API_key}';
+  // static const now_playing_movie_URL = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_release_type=2|3&release_date.gte={min_date}&release_date.lte={max_date}&api_key=${Constants.API_key}';
 
   List<Movie> all_trending_movies = [];
   List<Movie> get get_all_trending_movies => all_trending_movies;
@@ -24,6 +27,11 @@ class MovieModel extends ChangeNotifier{
   List<Movie> get get_all_upcoming_movies => all_upcoming_movies;
   bool upcoming_movies_loaded = true;
   bool get get_upcoming_movies_loaded=> upcoming_movies_loaded;
+
+  List<Movie> all_now_playing_movies = [];
+  List<Movie> get get_all_now_playing_movies => all_now_playing_movies;
+  bool now_playing_movies_loaded = true;
+  bool get get_now_playing_movies_loaded => now_playing_movies_loaded;
 
   List<Movie> savedMovies = [];
 
@@ -70,6 +78,7 @@ void toggleFavorite(BuildContext context, Movie movie) {
     get_trending_movies();
     get_top_rated_movies();
     get_upcoming_movies();
+    get_now_playing_movies();
 
   }
 
@@ -127,6 +136,26 @@ void toggleFavorite(BuildContext context, Movie movie) {
       notifyListeners();
     } else {
       upcoming_movies_loaded = false;
+      notifyListeners();
+      throw Exception('Something happended');
+      
+    }
+  }
+
+  void get_now_playing_movies() async {
+    final response = await http.get(Uri.parse(now_playing_movie_URL));
+    if (response.statusCode == 200) {
+      now_playing_movies_loaded = false;
+      notifyListeners();
+
+      var moviesJSON = jsonDecode(response.body)['results'] as List;
+      all_now_playing_movies = moviesJSON.map((movie) => Movie.fromJson(movie)).toList();
+      await Future.delayed(Duration(seconds: 5)); 
+
+      now_playing_movies_loaded = true;
+      notifyListeners();
+    } else {
+      now_playing_movies_loaded = false;
       notifyListeners();
       throw Exception('Something happended');
       
