@@ -1,28 +1,30 @@
-//upcoming_movie
 import 'package:cinequest/constants.dart';
 import 'package:cinequest/movie_model.dart';
 import 'package:cinequest/movie_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-class UpcomingMoviesSlider extends StatelessWidget {
-  const UpcomingMoviesSlider();
+import 'package:cinequest/movie.dart'; 
+class NowPlayingMoviesSlider extends StatelessWidget {
+  const NowPlayingMoviesSlider({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final moviesListModel = Provider.of<MovieModel>(context);
-    final upcomingMovies = moviesListModel.get_all_upcoming_movies;
+    final nowPlayingMovies = moviesListModel.get_all_now_playing_movies;
 
-    return upcomingMovies.isNotEmpty
+    return nowPlayingMovies.isNotEmpty
         ? SizedBox(
             height: 250,
             width: double.infinity,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
+              // apply scroll effects
               physics: const BouncingScrollPhysics(),
-              itemCount: upcomingMovies.length,
+              itemCount: nowPlayingMovies.length, // show 10 movies
               itemBuilder: (context, index) {
-                final upcoming_movie = upcomingMovies[index];
+                final now_playing_movie = nowPlayingMovies[index];
                 return Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: GestureDetector(
@@ -31,26 +33,25 @@ class UpcomingMoviesSlider extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) => MoviePage(
-                            movie_image_path: upcoming_movie.movie_image_path,
-                            movie_title: upcoming_movie.movie_title,
-                            movie_synopsis: upcoming_movie.movie_synopsis,
-                            movie_release_date: upcoming_movie.movie_release_date,
-                            movie_vote_avg: upcoming_movie.movie_vote_avg,
-                            movieId: upcoming_movie.id,
+                            movie_image_path: now_playing_movie.movie_image_path,
+                            movie_title: now_playing_movie.movie_title,
+                            movie_synopsis: now_playing_movie.movie_synopsis,
+                            movie_release_date: now_playing_movie.movie_release_date,
+                            movie_vote_avg: now_playing_movie.movie_vote_avg,
+                            movieId: now_playing_movie.id,
                           ),
                         ),
                       );
                     },
                     child: Stack(
                       children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(15),
-                          child: SizedBox(
-                            height: 250,
-                            width: 150,
-                            child: Image.network(
-                              '${Constants.image_path}${upcoming_movie.movie_image_path}',
-                              filterQuality: FilterQuality.high,
+                        Container(
+                          height: 250,
+                          width: 150,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(15),
+                            image: DecorationImage(
+                              image: NetworkImage('${Constants.image_path}${now_playing_movie.movie_image_path}'),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -58,12 +59,7 @@ class UpcomingMoviesSlider extends StatelessWidget {
                         Positioned(
                           top: 5,
                           right: 5,
-                          child: FavoriteIcon(
-                            isFavorite: upcoming_movie.isFavorite,
-                            onFavoriteChanged: (isFavorite) {
-                              moviesListModel.toggleFavorite(context, upcoming_movie);
-                            },
-                          ),
+                          child: FavoriteIcon(now_playing_movie), // Pass the Movie object here
                         ),
                       ],
                     ),
@@ -76,20 +72,22 @@ class UpcomingMoviesSlider extends StatelessWidget {
   }
 }
 
-class FavoriteIcon extends StatelessWidget {
-  final bool isFavorite;
-  final Function(bool) onFavoriteChanged;
+class FavoriteIcon extends StatefulWidget {
+  final Movie movie;
 
-  const FavoriteIcon({
-    required this.isFavorite,
-    required this.onFavoriteChanged,
-  });
+  FavoriteIcon(this.movie);
 
   @override
+  _FavoriteIconState createState() => _FavoriteIconState();
+}
+
+class _FavoriteIconState extends State<FavoriteIcon> {
+  @override
   Widget build(BuildContext context) {
+    bool isFavorite = widget.movie.isFavorite;
     return GestureDetector(
       onTap: () {
-        onFavoriteChanged(!isFavorite);
+        Provider.of<MovieModel>(context, listen: false).toggleFavorite(context, widget.movie);
       },
       child: Icon(
         isFavorite ? Icons.favorite : Icons.favorite_border,
@@ -99,4 +97,3 @@ class FavoriteIcon extends StatelessWidget {
     );
   }
 }
-
