@@ -43,43 +43,47 @@ class MovieModel extends ChangeNotifier{
   List<MovieWatchCountry> get get_all_countries => movie_watch_country_data;
 
   //saving movies
-// Modify the toggleFavorite method to accept BuildContext
+  void toggleFavorite(BuildContext context, Movie movie) {
+    movie.isFavorite = !movie.isFavorite;
+    String message;
+    if (movie.isFavorite) {
+      savedMovies.add(movie);
+      message = 'Movie Saved';
+    } else {
+      savedMovies.removeWhere((savedMovie) => savedMovie.id == movie.id);
+      message = 'Movie Removed';
+    }
+    notifyListeners();
 
-void toggleFavorite(BuildContext context, Movie movie) {
-  movie.isFavorite = !movie.isFavorite;
-  String message;
-  if (movie.isFavorite) {
-    savedMovies.add(movie);
-    message = 'Movie Saved';
-  } else {
-    savedMovies.removeWhere((savedMovie) => savedMovie.id == movie.id);
-    message = 'Movie Removed';
+    // Create a GlobalKey for the AlertDialog
+    final GlobalKey<State> _alertDialogKey = GlobalKey<State>();
+
+    // Show the AlertDialog with larger font size
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          key: _alertDialogKey, // Assign the GlobalKey to the AlertDialog
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10))
+          ),
+          content: Text(
+            message,
+            style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 20), 
+            textAlign: TextAlign.center, // Customize the font size here
+          ),
+        );
+      },
+    );
+
+    // Close the AlertDialog after 2 seconds
+    Timer(Duration(seconds: 2), () {
+      // Dismiss the AlertDialog using the GlobalKey
+      Navigator.of(_alertDialogKey.currentContext!).pop();
+    });
   }
-  notifyListeners();
 
-  // Show the AlertDialog with larger font size
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(10))
-        ),
-        content: Text(
-          message,
-          style: TextStyle(fontWeight: FontWeight.bold,color: Colors.black,fontSize: 20), 
-          textAlign: TextAlign.center, // Customize the font size here
-        ),
-      );
-    },
-  );
-
-  // Close the AlertDialog after 2 seconds
-  Timer(Duration(seconds: 2), () {
-    Navigator.of(context, rootNavigator: true).pop('dialog');
-  });
-}
 
   MovieModel() {
     get_trending_movies();
