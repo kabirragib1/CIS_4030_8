@@ -1,18 +1,17 @@
-// import 'package:cinequest/app_drawer.dart';
-// import 'package:cinequest/logout_screen.dart';
-// import 'package:cinequest/setting_screen.dart';
 import 'package:cinequest/constants.dart';
 import 'package:cinequest/view_reviews.dart';
+import 'package:cinequest/movie_availability.dart';
 import 'package:cinequest/watch_movie.dart';
 import 'package:flutter/material.dart';
 import 'package:cinequest/movie_interact.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import 'package:cinequest/trending_movie_slider.dart';
-// import 'package:cinequest/top_rated_movie_slider.dart';
-// import 'package:cinequest/upcoming_movie_slider.dart';
-// import 'package:cinequest/saved_movies_screen.dart';
+import 'package:cinequest/movie_model.dart';
+import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class MoviePage extends StatelessWidget {
+ 
+
+class MoviePage extends StatefulWidget {
 
   final String movie_image_path;
   final String movie_title;
@@ -23,8 +22,62 @@ class MoviePage extends StatelessWidget {
 
   MoviePage({required this.movie_image_path, required this.movie_title, required this.movie_synopsis, required this.movie_release_date, required this.movie_vote_avg, required this.movieId});
 
+
+  @override
+  _MoviePageState createState() => _MoviePageState();
+
+}
+
+class _MoviePageState extends State<MoviePage> {
+
+  List <MovieAvailability> film_availability = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetch_movie_availability(widget.movieId);
+  }
+
+  Future<void> fetch_movie_availability(int movieId) async {
+    final api_data = await http.get(Uri.parse('https://api.themoviedb.org/3/movie/${movieId}/watch/providers?api_key=${Constants.API_key}'));
+    if (api_data.statusCode != 200) {
+        setState(() {
+          film_availability = [];
+        });
+    } else {
+      final api_json = jsonDecode(api_data.body)['results'] as Map<String, dynamic>;
+      if (api_json.isNotEmpty) {
+        bool flat_rate_indicator = false;
+        api_json.forEach((country_code, watch_data) {
+          if (watch_data.containsKey('flatrate')) {
+            if (watch_data['flatrate'] is List) {
+              film_availability.add(MovieAvailability.fromJson(movieId, country_code, watch_data));
+              flat_rate_indicator = true;
+            }
+          }
+        });
+        if (flat_rate_indicator == false) {
+          setState(() {
+            film_availability = [];
+          });
+        } else { 
+          setState(() {
+            film_availability = film_availability;
+          });
+        }
+      } else {
+        setState(() {
+          film_availability = [];
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final moviesListModel = Provider.of<MovieModel>(context);
+    final movie_watch_country_data = moviesListModel.get_all_countries;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -52,7 +105,7 @@ class MoviePage extends StatelessWidget {
                             child: Image.network(
                                 filterQuality: FilterQuality.high,
                                 fit: BoxFit.cover,
-                                '${Constants.image_path}${movie_image_path}'
+                                '${Constants.image_path}${widget.movie_image_path}'
                             )
                         ),
                         Flexible(
@@ -61,11 +114,11 @@ class MoviePage extends StatelessWidget {
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('Movie Title: ' + movie_title, style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold)),
+                                    Text('Movie Title: ' + widget.movie_title, style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold)),
                                     SizedBox(height: 25),
                                     // Text('Director: ', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
                                     // SizedBox(height: 25),
-                                    Text('Release Date: ' + movie_release_date, style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold)),
+                                    Text('Release Date: ' + widget.movie_release_date, style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold)),
                                     SizedBox(height: 25),
                                     // Text('Duration: ', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
                                     // SizedBox(height: 25),
@@ -97,10 +150,10 @@ class MoviePage extends StatelessWidget {
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded( // Ensure the text takes available space
+                        Expanded(
                           child: Padding(
                             padding: EdgeInsets.all(10.0),
-                            child: Text(movie_synopsis, softWrap: true, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal)),
+                            child: Text(widget.movie_synopsis, softWrap: true, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal)),
                           ),
                         ),
                       ],
@@ -121,20 +174,61 @@ class MoviePage extends StatelessWidget {
                         )
                       ],
                     ),
-                    const Row (
+                    film_availability.isNotEmpty
+                    ? Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text('DISNEY+', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal)),
-                              Text('NETFLIX', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal)),
-                              Text('HBO MAX', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal)),
-                            ],
+                        Container( 
+                          height: 250, 
+                          child: ListView.builder(
+                            itemCount: film_availability.length,
+                            shrinkWrap: true,
+                            itemBuilder: (context, country_index) {
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  movie_watch_country_data.indexWhere((country) => country.country_short_form == (film_availability[country_index].country_short_form)) >= 0
+                                  ? Text(movie_watch_country_data[movie_watch_country_data.indexWhere((country) => country.country_short_form == (film_availability[country_index].country_short_form))].english_name, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal))
+                                  : Text(film_availability[country_index].country_short_form, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal)),
+                                  ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                    itemCount: film_availability[country_index].flatrate.length,
+                                    itemBuilder: (context, flat_rate_index) {
+                                      return Container(
+                                        margin: EdgeInsets.all(12.0),
+                                        color:  Color.fromARGB(255, 144, 90, 10),
+                                        child:  ListTile(
+                                          title: Text(film_availability[country_index].flatrate[flat_rate_index].provider_name),
+                                          leading: Image.network(
+                                            height: 75,
+                                            width: 50,
+                                            filterQuality: FilterQuality.high,
+                                            '${Constants.image_path}${film_availability[country_index].flatrate[flat_rate_index].logo_path}',
+                                            fit: BoxFit.cover,
+                                          ),
+                                          onTap: () {}
+                                        ) ,
+                                      );
+                                    },
+                                  ),
+                                  const SizedBox(height: 25)
+                                ],
+                              );
+                            },
                           ),
-                        )
+                        ),
+                      ],
+                    )
+                    : Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded( // Ensure the text takes available space
+                          child: Padding(
+                            padding: EdgeInsets.all(12.0),
+                            child: Text('Currently No Streaming Service Has ${widget.movie_title} Available. Please Visit Your Local Theatre.', softWrap: true, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal)),
+                          ),
+                        ),
                       ],
                     ),
                     const Divider(
@@ -147,16 +241,16 @@ class MoviePage extends StatelessWidget {
                     const SizedBox(height: 15),
                     ElevatedButton(
                         onPressed: (){
-                          Navigator.push(context,MaterialPageRoute(builder: (context) =>  ViewReviewPage(movie_image_path: movie_image_path, movie_title: movie_title, movie_vote_avg: movie_vote_avg, movieId: movieId)));
+                          Navigator.push(context,MaterialPageRoute(builder: (context) =>  ViewReviewPage(movie_image_path: widget.movie_image_path, movie_title: widget.movie_title, movie_vote_avg: widget.movie_vote_avg, movieId: widget.movieId)));
                         },
                         child: const Text('VIEW REVIEWS', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
                         style: ElevatedButton.styleFrom(
                           primary: Color.fromARGB(255, 250, 178, 54),
                           onPrimary: Colors.white,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50), // Rounded corners
+                            borderRadius: BorderRadius.circular(50),
                           ),
-                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Button padding
+                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                         )
                     ),
                     // const SizedBox(height: 15),
