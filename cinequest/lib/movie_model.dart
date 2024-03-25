@@ -1,9 +1,12 @@
 import 'dart:convert';
 import 'dart:async';
 import 'package:cinequest/constants.dart';
+import 'package:cinequest/movie_watch_country.dart';
 import 'package:cinequest/movie.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
+import 'movie_availability.dart';
 
 class MovieModel extends ChangeNotifier{
   static const trending_movie_URL = 'https://api.themoviedb.org/3/trending/movie/day?api_key=${Constants.API_key}';
@@ -12,6 +15,7 @@ class MovieModel extends ChangeNotifier{
   // static const upcoming_movie_URL = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_release_type=2|3&release_date.gte={min_date}&release_date.lte={max_date}&api_key=${Constants.API_key}';
   static const now_playing_movie_URL = 'https://api.themoviedb.org/3/movie/now_playing?api_key=${Constants.API_key}';
   // static const now_playing_movie_URL = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_release_type=2|3&release_date.gte={min_date}&release_date.lte={max_date}&api_key=${Constants.API_key}';
+  static const countries_names_URL = 'https://api.themoviedb.org/3/configuration/countries?api_key=${Constants.API_key}';
 
   List<Movie> all_trending_movies = [];
   List<Movie> get get_all_trending_movies => all_trending_movies;
@@ -34,6 +38,9 @@ class MovieModel extends ChangeNotifier{
   bool get get_now_playing_movies_loaded => now_playing_movies_loaded;
 
   List<Movie> savedMovies = [];
+
+  List<MovieWatchCountry> movie_watch_country_data = [];
+  List<MovieWatchCountry> get get_all_countries => movie_watch_country_data;
 
   //saving movies
 // Modify the toggleFavorite method to accept BuildContext
@@ -79,6 +86,7 @@ void toggleFavorite(BuildContext context, Movie movie) {
     get_top_rated_movies();
     get_upcoming_movies();
     get_now_playing_movies();
+    get_movie_watch_countries();
 
   }
 
@@ -159,6 +167,23 @@ void toggleFavorite(BuildContext context, Movie movie) {
       notifyListeners();
       throw Exception('Something happended');
       
+    }
+  }
+
+   void get_movie_watch_countries() async {
+    final response = await http.get(Uri.parse(countries_names_URL));
+     if (response.statusCode == 200) {
+     List<Map<String, dynamic>> jsonResponse = List<Map<String, dynamic>>.from(json.decode(response.body));
+     movie_watch_country_data = jsonResponse.map((data) {
+        return MovieWatchCountry(
+          country_short_form: data['iso_3166_1'],
+          english_name: data['english_name'],
+          native_name: data['native_name'],
+        );
+      }).toList();
+      notifyListeners();
+     } else {
+      throw Exception('Something happended');
     }
   }
 }
