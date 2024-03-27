@@ -6,8 +6,6 @@ import 'package:cinequest/movie.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-import 'movie_availability.dart';
-
 class MovieModel extends ChangeNotifier{
   static const trending_movie_URL = 'https://api.themoviedb.org/3/trending/movie/day?api_key=${Constants.API_key}';
   static const top_rated_movie_URL = 'https://api.themoviedb.org/3/movie/top_rated?api_key=${Constants.API_key}';

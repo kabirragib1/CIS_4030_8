@@ -1,4 +1,6 @@
 import 'package:cinequest/constants.dart';
+import 'package:cinequest/movie_cast.dart';
+import 'package:cinequest/movie_genre.dart';
 import 'package:cinequest/view_reviews.dart';
 import 'package:cinequest/movie_availability.dart';
 import 'package:cinequest/watch_movie.dart';
@@ -31,11 +33,15 @@ class MoviePage extends StatefulWidget {
 class _MoviePageState extends State<MoviePage> {
 
   List <MovieAvailability> film_availability = [];
+  List <MovieCast> film_cast = [];
+  List <MovieGenre> film_genres = [];
 
   @override
   void initState() {
     super.initState();
     fetch_movie_availability(widget.movieId);
+    fetch_movie_cast(widget.movieId);
+    fetch_movie_genres(widget.movieId);
   }
 
   Future<void> fetch_movie_availability(int movieId) async {
@@ -70,6 +76,36 @@ class _MoviePageState extends State<MoviePage> {
           film_availability = [];
         });
       }
+    }
+  }
+
+  Future<void> fetch_movie_cast(int movieId) async {
+     final api_data = await http.get(Uri.parse('https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${Constants.API_key}'));
+      if (api_data.statusCode != 200) {
+        setState(() {
+          film_cast = [];
+        });
+    } else {
+      final api_json = jsonDecode(api_data.body)['cast'] as List;
+      film_cast = api_json.map((cast) => MovieCast.fromJson(cast)).toList();
+      setState(() {
+        film_cast = film_cast;
+      });
+    }
+  }
+
+    Future<void> fetch_movie_genres(int movieId) async {
+     final api_data = await http.get(Uri.parse('https://api.themoviedb.org/3/movie/${movieId}?api_key=${Constants.API_key}'));
+      if (api_data.statusCode != 200) {
+        setState(() {
+          film_genres = [];
+        });
+    } else {
+      final api_json = jsonDecode(api_data.body)['genres'] as List;
+      film_genres = api_json.map((cast) => MovieGenre.fromJson(cast)).toList();
+      setState(() {
+        film_genres = film_genres;
+      });
     }
   }
 
@@ -165,6 +201,74 @@ class _MoviePageState extends State<MoviePage> {
                       color: Colors.white,
                       height: 15.0,
                     ),
+                     const Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child:  Text('CAST:', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                          )
+                        ]
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container( 
+                          height: 250, 
+                          child: ListView.builder(
+                            itemCount: film_cast.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                leading: Icon(Icons.circle, size: 15.0),
+                                title: film_cast[index].character == ""  
+                                ? Text('${film_cast[index].name}', softWrap: true, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal))
+                                : Text('${film_cast[index].name} as ${film_cast[index].character}', softWrap: true, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal))
+                              );
+                            },
+                          )
+                        )
+                      ]
+                    ),
+                    const Divider(
+                      thickness: 3.0,
+                      indent: 10.0,
+                      endIndent: 10.0,
+                      color: Colors.white,
+                      height: 15.0,
+                    ),
+                    const Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child:  Text('GENRES:', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                          )
+                        ]
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container( 
+                          height: 100, 
+                          child: ListView.builder(
+                            itemCount: film_genres.length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                leading: Icon(Icons.circle, size: 15.0),
+                                title: Text('${film_genres[index].name}', softWrap: true, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal))
+                              );
+                            },
+                          )
+                        )
+                      ]
+                    ),
+                    const Divider(
+                      thickness: 3.0,
+                      indent: 10.0,
+                      endIndent: 10.0,
+                      color: Colors.white,
+                      height: 15.0,
+                    ),
                     const Row (
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -193,18 +297,18 @@ class _MoviePageState extends State<MoviePage> {
                                   ListView.builder(
                                     shrinkWrap: true,
                                     physics: NeverScrollableScrollPhysics(),
-                                    itemCount: film_availability[country_index].flatrate.length,
-                                    itemBuilder: (context, flat_rate_index) {
+                                    itemCount: film_availability[country_index].streaming_services.length,
+                                    itemBuilder: (context, streaming_service_index) {
                                       return Container(
                                         margin: EdgeInsets.all(12.0),
                                         color:  Color.fromARGB(255, 144, 90, 10),
                                         child:  ListTile(
-                                          title: Text(film_availability[country_index].flatrate[flat_rate_index].provider_name),
+                                          title: Text(film_availability[country_index].streaming_services[streaming_service_index].provider_name),
                                           leading: Image.network(
                                             height: 75,
                                             width: 50,
                                             filterQuality: FilterQuality.high,
-                                            '${Constants.image_path}${film_availability[country_index].flatrate[flat_rate_index].logo_path}',
+                                            '${Constants.image_path}${film_availability[country_index].streaming_services[streaming_service_index].logo_path}',
                                             fit: BoxFit.cover,
                                           ),
                                           onTap: () {}
@@ -292,7 +396,7 @@ class _MoviePageState extends State<MoviePage> {
               )
           ),
         ],
-      ),
+      )
       // drawer: AppDrawer()
     );
   }
