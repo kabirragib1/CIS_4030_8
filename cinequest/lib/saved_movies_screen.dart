@@ -37,21 +37,32 @@ class SavedMoviesScreen extends StatelessWidget {
                     width: 50,
                     height: 50,
                   ),
+                   trailing: IconButton(
+                    icon: Icon(
+                      savedMovie.isFavorite
+                          ? Icons.favorite
+                          : Icons.favorite_border,
+                      color: savedMovie.isFavorite ? Colors.red : null,
+                    ),
+                    onPressed: () {
+                      moviesListModel.toggleFavorite(context, savedMovie);
+                    },
+                  ),
                   onTap: () {
                     // Handle tapping on saved movie
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MoviePage(
-                            movie_image_path: savedMovie.movie_image_path,
-                            movie_title: savedMovie.movie_title,
-                            movie_synopsis: savedMovie.movie_synopsis,
-                            movie_release_date: savedMovie.movie_release_date,
-                            movie_vote_avg: savedMovie.movie_vote_avg,
-                            movieId: savedMovie.id,
-                          ),
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MoviePage(
+                          movie_image_path: savedMovie.movie_image_path,
+                          movie_title: savedMovie.movie_title,
+                          movie_synopsis: savedMovie.movie_synopsis,
+                          movie_release_date: savedMovie.movie_release_date,
+                          movie_vote_avg: savedMovie.movie_vote_avg,
+                          movieId: savedMovie.id,
                         ),
-                      );
+                      ),
+                    );
                   },
                 );
               },
@@ -66,3 +77,4 @@ class SavedMoviesScreen extends StatelessWidget {
     );
   }
 }
+

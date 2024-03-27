@@ -10,8 +10,7 @@ import 'package:cinequest/movie_model.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
- 
+import 'package:cinequest/movie.dart';
 
 class MoviePage extends StatefulWidget {
 
@@ -150,12 +149,27 @@ class _MoviePageState extends State<MoviePage> {
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('Movie Title: ' + widget.movie_title, style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold)),
+                                    Text(
+                                      'Movie Title: ',
+                                      style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      widget.movie_title,
+                                      style: TextStyle(fontSize: 20.0),
+                                    ),
                                     SizedBox(height: 25),
                                     // Text('Director: ', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
                                     // SizedBox(height: 25),
-                                    Text('Release Date: ' + widget.movie_release_date, style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold)),
-                                    SizedBox(height: 25),
+                                    Text(
+                                      'Release Date: ',
+                                      style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      widget.movie_release_date,
+                                      style: TextStyle(fontSize: 20.0),
+                                    ),
                                     // Text('Duration: ', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
                                     // SizedBox(height: 25),
                                     // Text('Studio: ', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
@@ -344,19 +358,47 @@ class _MoviePageState extends State<MoviePage> {
                     ),
                     const SizedBox(height: 15),
                     ElevatedButton(
-                        onPressed: (){
-                          Navigator.push(context,MaterialPageRoute(builder: (context) =>  ViewReviewPage(movie_image_path: widget.movie_image_path, movie_title: widget.movie_title, movie_vote_avg: widget.movie_vote_avg, movieId: widget.movieId)));
-                        },
-                        child: const Text('VIEW REVIEWS', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
-                        style: ElevatedButton.styleFrom(
-                          primary: Color.fromARGB(255, 250, 178, 54),
-                          onPrimary: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                        )
+                      onPressed: (){
+                        Navigator.push(context,MaterialPageRoute(builder: (context) =>  ViewReviewPage(movie_image_path: widget.movie_image_path, movie_title: widget.movie_title, movie_vote_avg: widget.movie_vote_avg, movieId: widget.movieId)));
+                      },
+                      child: const Text('VIEW REVIEWS', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 250, 178, 54),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50), // Rounded corners
+                        ),
+                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Button padding
+                      )
                     ),
+                    ElevatedButton(
+                      onPressed: () {
+                        final movie = Movie(
+                          widget.movie_title,
+                          '',
+                          widget.movie_image_path,
+                          '',
+                          widget.movie_synopsis,
+                          widget.movie_release_date,
+                          widget.movie_vote_avg,
+                          widget.movieId,
+                        );
+                        Provider.of<MovieModel>(context, listen: false).toggleFavorite(context, movie);
+                      },
+                      child: Text(
+                        'SAVE MOVIE',
+                        style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 250, 178, 54),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50), // Rounded corners
+                        ),
+                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Button padding
+                      ),
+                    ),
+
                     // const SizedBox(height: 15),
                     // Row(
                     //     mainAxisAlignment: MainAxisAlignment.center,
