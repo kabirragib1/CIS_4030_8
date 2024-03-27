@@ -44,8 +44,8 @@ class _SettingsScreen extends State<SettingsScreen> {
                         onPressed: (){}, 
                         child: const Text('ACCOUNT', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
                         style: ElevatedButton.styleFrom(
-                          primary: Color.fromARGB(255, 250, 178, 54),
-                          onPrimary: Colors.white,
+                          backgroundColor: Color.fromARGB(255, 250, 178, 54),
+                          foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50), // Rounded corners
                           ),
@@ -64,8 +64,8 @@ class _SettingsScreen extends State<SettingsScreen> {
                         onPressed: (){}, 
                         child: const Text('DISPLAY', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
                         style: ElevatedButton.styleFrom(
-                          primary: Color.fromARGB(255, 250, 178, 54),
-                          onPrimary: Colors.white,
+                          backgroundColor: Color.fromARGB(255, 250, 178, 54),
+                          foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50), // Rounded corners
                           ),
@@ -84,8 +84,8 @@ class _SettingsScreen extends State<SettingsScreen> {
                         onPressed: (){}, 
                         child: const Text('NOTIFICATIONS', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
                         style: ElevatedButton.styleFrom(
-                          primary: Color.fromARGB(255, 250, 178, 54),
-                          onPrimary: Colors.white,
+                          backgroundColor: Color.fromARGB(255, 250, 178, 54),
+                          foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50), // Rounded corners
                           ),
@@ -104,8 +104,8 @@ class _SettingsScreen extends State<SettingsScreen> {
                         onPressed: (){}, 
                         child: const Text('STORAGE', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
                         style: ElevatedButton.styleFrom(
-                          primary: Color.fromARGB(255, 250, 178, 54),
-                          onPrimary: Colors.white,
+                          backgroundColor: Color.fromARGB(255, 250, 178, 54),
+                          foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50), // Rounded corners
                           ),
@@ -114,27 +114,7 @@ class _SettingsScreen extends State<SettingsScreen> {
                       ),
                     )
                   ]
-                ),
-                const SizedBox(height: 15),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: (){}, 
-                        child: const Text('VIDEO', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
-                        style: ElevatedButton.styleFrom(
-                          primary: Color.fromARGB(255, 250, 178, 54),
-                          onPrimary: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(50), // Rounded corners
-                          ),
-                          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Button padding
-                        )
-                      ),
-                    )
-                  ]
-                ),
+                ),            
                 const SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -144,8 +124,8 @@ class _SettingsScreen extends State<SettingsScreen> {
                         onPressed: (){}, 
                         child: const Text('ABOUT', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
                         style: ElevatedButton.styleFrom(
-                          primary: Color.fromARGB(255, 250, 178, 54),
-                          onPrimary: Colors.white,
+                          backgroundColor: Color.fromARGB(255, 250, 178, 54),
+                          foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50), // Rounded corners
                           ),
@@ -154,27 +134,7 @@ class _SettingsScreen extends State<SettingsScreen> {
                       ),
                     )
                   ]
-                ),
-                const SizedBox(height: 15),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                   Expanded(
-                    child: ElevatedButton(
-                      onPressed: (){}, 
-                      child: const Text('LOGOUT', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
-                      style: ElevatedButton.styleFrom(
-                        primary: Color.fromARGB(255, 250, 178, 54),
-                        onPrimary: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), 
-                      )
-                    ),
-                   )
-                  ]
-                ),
+                ),        
               ]
             )
           ),
