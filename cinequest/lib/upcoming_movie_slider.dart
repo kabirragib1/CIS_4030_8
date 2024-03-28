@@ -48,11 +48,13 @@ class UpcomingMoviesSlider extends StatelessWidget {
                           child: SizedBox(
                             height: 250,
                             width: 150,
-                            child: Image.network(
+                            child: upcoming_movie.movie_image_path != ''
+                            ? Image.network(
                               '${Constants.image_path}${upcoming_movie.movie_image_path}',
                               filterQuality: FilterQuality.high,
                               fit: BoxFit.cover,
-                            ),
+                            )
+                            : Container()
                           ),
                         ),
                         Positioned(

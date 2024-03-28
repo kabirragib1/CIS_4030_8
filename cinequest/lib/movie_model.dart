@@ -9,8 +9,6 @@ import 'package:http/http.dart' as http;
 class MovieModel extends ChangeNotifier{
   static const trending_movie_URL = 'https://api.themoviedb.org/3/trending/movie/day?api_key=${Constants.API_key}';
   static const top_rated_movie_URL = 'https://api.themoviedb.org/3/movie/top_rated?api_key=${Constants.API_key}';
-  static const upcoming_movie_URL = 'https://api.themoviedb.org/3/movie/upcoming?api_key=${Constants.API_key}';
-  // static const upcoming_movie_URL = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_release_type=2|3&release_date.gte={min_date}&release_date.lte={max_date}&api_key=${Constants.API_key}';
   static const now_playing_movie_URL = 'https://api.themoviedb.org/3/movie/now_playing?api_key=${Constants.API_key}';
   // static const now_playing_movie_URL = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_release_type=2|3&release_date.gte={min_date}&release_date.lte={max_date}&api_key=${Constants.API_key}';
   static const countries_names_URL = 'https://api.themoviedb.org/3/configuration/countries?api_key=${Constants.API_key}';
@@ -133,7 +131,10 @@ class MovieModel extends ChangeNotifier{
   }
 
   void get_upcoming_movies() async {
-    final response = await http.get(Uri.parse(upcoming_movie_URL));
+    final current_date = DateTime.now();
+    String current_date_str = current_date.toIso8601String();
+    final response = await http.get(Uri.parse('https://api.themoviedb.org/3/discover/movie?api_key=${Constants.API_key}&primary_release_date.gte=${current_date_str.split('T')[0]}'));
+    // final response = await http.get(Uri.parse('https://api.themoviedb.org/3/movie/upcoming?api_key=01474bb725783ef4f6c03ee7decb63be'));
     if (response.statusCode == 200) {
       upcoming_movies_loaded = false;
       notifyListeners();
