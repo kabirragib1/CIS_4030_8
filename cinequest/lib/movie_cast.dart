@@ -9,7 +9,7 @@ class MovieCast {
 
   return MovieCast(
     json['name'] as String,
-    json['character'] as String,
+    json['character'] as String
   );
 }
 

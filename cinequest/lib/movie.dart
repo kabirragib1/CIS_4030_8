@@ -20,7 +20,7 @@ class Movie {
   factory Movie.fromJson(Map<String, dynamic> json) {
     return Movie(
       json['title'] as String,
-      json['backdrop_path'] as String,
+      json['backdrop_path'] != null ? json['backdrop_path'] as String : '',
       json['poster_path'] as String,
       json['original_title'] as String,
       json['overview'] as String,
@@ -159,7 +159,9 @@ class Movie {
   static Future<List<Movie>> _fetchUpcomingMovies() async {
     final Map<int, Movie> upcomingMoviesMap = {};
     const apiKey = Constants.API_key;
-    final apiUrl = 'https://api.themoviedb.org/3/movie/upcoming?api_key=$apiKey';
+    final current_date = DateTime.now();
+    String current_date_str = current_date.toIso8601String();
+    final apiUrl = 'https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&primary_release_date.gte=${current_date_str.split('T')[0]}';
     try {
       final response = await http.get(Uri.parse(apiUrl));
       if (response.statusCode == 200) {

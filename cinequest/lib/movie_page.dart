@@ -1,5 +1,7 @@
 import 'package:cinequest/constants.dart';
 import 'package:cinequest/movie_cast.dart';
+import 'package:cinequest/movie_company.dart';
+import 'package:cinequest/movie_crew.dart';
 import 'package:cinequest/movie_genre.dart';
 import 'package:cinequest/view_reviews.dart';
 import 'package:cinequest/movie_availability.dart';
@@ -34,6 +36,9 @@ class _MoviePageState extends State<MoviePage> {
   List <MovieAvailability> film_availability = [];
   List <MovieCast> film_cast = [];
   List <MovieGenre> film_genres = [];
+  List <MovieCrew> film_crew = [];
+  bool film_crew_loaded = false;
+  List <MovieCompany> film_companies = [];
 
   @override
   void initState() {
@@ -41,6 +46,8 @@ class _MoviePageState extends State<MoviePage> {
     fetch_movie_availability(widget.movieId);
     fetch_movie_cast(widget.movieId);
     fetch_movie_genres(widget.movieId);
+    fetch_movie_companies(widget.movieId);
+    fetch_movie_crew(widget.movieId);
   }
 
   Future<void> fetch_movie_availability(int movieId) async {
@@ -108,6 +115,38 @@ class _MoviePageState extends State<MoviePage> {
     }
   }
 
+  Future<void> fetch_movie_companies(int movieId) async {
+    final api_data = await http.get(Uri.parse('https://api.themoviedb.org/3/movie/${movieId}?api_key=${Constants.API_key}'));
+      if (api_data.statusCode != 200) {
+        setState(() {
+          film_companies = [];
+        });
+    } else {
+      final api_json = jsonDecode(api_data.body)['production_companies'] as List;
+      film_companies = api_json.map((company) => MovieCompany.fromJson(company)).toList();
+      setState(() {
+        film_companies = film_companies;
+      });
+    }
+  }
+
+  Future<void> fetch_movie_crew(int movieId) async {
+    final api_data = await http.get(Uri.parse('https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${Constants.API_key}'));
+      if (api_data.statusCode != 200) {
+        setState(() {
+          film_crew = [];
+          film_crew_loaded = false;
+        });
+    } else {
+      final api_json = jsonDecode(api_data.body)['crew'] as List;
+      film_crew = api_json.map((crew) => MovieCrew.fromJson(crew)).toList();
+      setState(() {
+        film_crew = film_crew;
+        film_crew_loaded = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final moviesListModel = Provider.of<MovieModel>(context);
@@ -125,7 +164,8 @@ class _MoviePageState extends State<MoviePage> {
         ),
         centerTitle: true,
       ),
-      body: ListView(
+      body: film_crew_loaded
+      ? ListView(
         children: [
           Padding(
               padding: EdgeInsets.all(20.0),
@@ -149,19 +189,29 @@ class _MoviePageState extends State<MoviePage> {
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
+                                    const Text(
                                       'Movie Title: ',
                                       style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
                                     ),
-                                    SizedBox(height: 8),
+                                    const SizedBox(height: 8),
                                     Text(
                                       widget.movie_title,
                                       style: TextStyle(fontSize: 20.0),
                                     ),
-                                    SizedBox(height: 25),
-                                    // Text('Director: ', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                                    // SizedBox(height: 25),
+                                    const SizedBox(height: 25),
+                                    const Text(
+                                      'Director: ',
+                                      style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                                    ),
+                                    const SizedBox(height: 8),
                                     Text(
+                                      film_crew.indexWhere((crew) => crew.job == ('Director')) >= 0 
+                                      ? film_crew[film_crew.indexWhere((crew) => crew.job == ('Director'))].name
+                                      : 'TBD',
+                                      style: TextStyle(fontSize: 20.0),
+                                    ),
+                                    const SizedBox(height: 25),
+                                    const Text(
                                       'Release Date: ',
                                       style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                                     ),
@@ -207,6 +257,56 @@ class _MoviePageState extends State<MoviePage> {
                           ),
                         ),
                       ],
+                    ),
+                    const Divider(
+                      thickness: 3.0,
+                      indent: 10.0,
+                      endIndent: 10.0,
+                      color: Colors.white,
+                      height: 15.0,
+                    ),
+                    const Row (
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child:  Text('PRODUCTION COMPANIES:', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                        )
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container( 
+                          height: 150, 
+                          // color:  Color.fromARGB(255, 144, 90, 10),
+                          child: ListView.builder(
+                            itemCount: film_companies.length,
+                            itemBuilder: (context, index) {
+                              return Container(
+                                margin: EdgeInsets.all(12.0),
+                                color:  Color.fromARGB(255, 144, 90, 10),
+                                child: ListTile(
+                                  leading: 
+                                  film_companies[index].logo_path != '' ?
+                                  Container (
+                                    width: 200,
+                                    height: 200,
+                                    padding: EdgeInsets.all(10.0),
+                                    child: Image.network(
+                                      filterQuality: FilterQuality.high,
+                                      '${Constants.image_path}${film_companies[index].logo_path}',
+                                      fit: BoxFit.contain,
+                                    )
+                                  )
+                                  : Icon(Icons.circle, size: 15.0),
+                                  title: Text('${film_companies[index].name}', softWrap: true, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal))
+                                )
+                              );
+                            }
+                          )
+                        )
+                      ]
                     ),
                     const Divider(
                       thickness: 3.0,
@@ -438,6 +538,9 @@ class _MoviePageState extends State<MoviePage> {
               )
           ),
         ],
+      )
+      : const Center(
+        child: CircularProgressIndicator()
       )
       // drawer: AppDrawer()
     );
