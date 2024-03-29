@@ -10,12 +10,13 @@ import 'package:provider/provider.dart';
 import 'package:cinequest/search_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-   const HomeScreen({super.key});
+  final String? userEmail; // Add a field for the user's email
 
-    @override
-    State<HomeScreen> createState() => _HomeScreenState();
+  const HomeScreen({super.key, this.userEmail}); // Modify the constructor to accept userEmail
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
 }
-
 
 class _HomeScreenState extends State<HomeScreen> {
   bool _isSearchBarVisible = false;
@@ -69,8 +70,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 35),
             // list of scrollable widgets 
-            const TopRatedMoviesSlider(),
-            const SizedBox(height: 35),
+              TopRatedMoviesSlider(userEmail: widget.userEmail),
+              const SizedBox(height: 35),
             Text(
               'Upcoming Movies',
               style: GoogleFonts.quicksand(fontSize: 25, fontWeight: FontWeight.w500)

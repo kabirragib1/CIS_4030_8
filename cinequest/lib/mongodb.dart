@@ -22,4 +22,27 @@ class MongoDatabase {
     final user = await collection?.findOne(where.eq('email', email));
     return user;
   }
+
+  // Add a movie to the user's favorites
+  static Future<void> addFavoriteMovie(String userEmail, Map<String, dynamic> movieData) async {
+    var collection = db?.collection(FAVORITES_COLLECTION_NAME);
+    // Include user email to identify the user who saved the movie
+    final document = {'userEmail': userEmail, ...movieData};
+    await collection?.insertOne(document);
+  }
+
+  // Retrieve all favorite movies for a user
+  static Future<List<Map<String, dynamic>>> getFavoriteMovies(String userEmail) async {
+    var collection = db?.collection(FAVORITES_COLLECTION_NAME);
+    final movies = await collection?.find(where.eq('userEmail', userEmail)).toList();
+    return movies ?? [];
+  }
+
+
+  // Method to remove a movie from a user's favorites
+  static Future<void> removeFavoriteMovie(String userEmail, int movieId) async {
+    var collection = db?.collection(FAVORITES_COLLECTION_NAME);
+    await collection?.deleteOne({'userEmail': userEmail, 'movieId': movieId});
+  }
+
 }

@@ -95,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                         if (user != null && user['password'] == password) {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => HomeScreen()),
+                            MaterialPageRoute(builder: (context) => HomeScreen(userEmail: email)),
                           );
                         } else {
                           showDialog(

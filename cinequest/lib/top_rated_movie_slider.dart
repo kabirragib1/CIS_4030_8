@@ -5,9 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:cinequest/movie.dart'; 
 class TopRatedMoviesSlider extends StatelessWidget {
-  const TopRatedMoviesSlider({
-    Key? key,
-  }) : super(key: key);
+  final String? userEmail;
+  const TopRatedMoviesSlider({Key? key, this.userEmail}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +37,8 @@ class TopRatedMoviesSlider extends StatelessWidget {
                             movie_synopsis: top_rated_movie.movie_synopsis,
                             movie_release_date: top_rated_movie.movie_release_date,
                             movie_vote_avg: top_rated_movie.movie_vote_avg,
-                            movieId: top_rated_movie.id
+                            movieId: top_rated_movie.id,
+                            userEmail: userEmail,
                           ),
                         ),
                       );

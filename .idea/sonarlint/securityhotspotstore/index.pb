@@ -59,3 +59,5 @@ K
 cinequest/lib/constant.dart,0\c\0ce93445221a114f4b89993e2d19573070c62558
 J
 cinequest/lib/mongodb.dart,e\4\e4ad30ba573ca4696dfd71bbabb61940ac5b58d5
+[
++cinequest/lib/now_playing_movie_slider.dart,9\1\913ea902cf665bc73015aa6ee1fecb3ff4f357ba

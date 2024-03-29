@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:cinequest/movie.dart';
+import 'mongodb.dart';
 
 class MoviePage extends StatefulWidget {
 
@@ -22,8 +23,9 @@ class MoviePage extends StatefulWidget {
   final String movie_release_date;
   final double movie_vote_avg;
   final int movieId;
+  final String? userEmail;
 
-  MoviePage({required this.movie_image_path, required this.movie_title, required this.movie_synopsis, required this.movie_release_date, required this.movie_vote_avg, required this.movieId});
+  MoviePage({required this.movie_image_path, required this.movie_title, required this.movie_synopsis, required this.movie_release_date, required this.movie_vote_avg, required this.movieId, this.userEmail,});
 
 
   @override
@@ -146,6 +148,8 @@ class _MoviePageState extends State<MoviePage> {
       });
     }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
