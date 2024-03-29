@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cinequest/movie.dart';
+import 'package:cinequest/movie_model.dart';
 import 'package:cinequest/movie_page.dart';
 import 'package:cinequest/constants.dart';
 
@@ -90,7 +91,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Future<void> _searchMovies(String query) async {
     try {
-      final searchResults = await Movie.searchMovies(query);
+      final searchResults = await MovieModel.searchMovies(query);
       setState(() {
         _searchResults = searchResults;
       });
