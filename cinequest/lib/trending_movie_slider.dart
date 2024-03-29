@@ -1,4 +1,5 @@
 import 'package:cinequest/constants.dart';
+import 'package:cinequest/movie.dart';
 import 'package:cinequest/movie_model.dart';
 import 'package:cinequest/movie_page.dart';
 import 'package:flutter/material.dart';
@@ -60,26 +61,7 @@ class _TrendingMovieSliderState extends State<TrendingMovieSlider> {
                       Positioned(
                         top: 5,
                         right: 5,
-                        child: IconButton(
-                          icon: Icon(
-                            isHeartClickedList[itemIndex]
-                                ? Icons.favorite // Use filled heart icon
-                                : Icons.favorite_border, // Use border heart icon
-                            color: isHeartClickedList[itemIndex]
-                                ? Colors.red // Change the color to red if heart clicked
-                                : Colors.white, // Change the color to white if not clicked
-                            size: 24, // Customize the size if needed
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              // Toggle the state of heart clicked
-                              isHeartClickedList[itemIndex] =
-                                  !isHeartClickedList[itemIndex];
-                            });
-                            // Toggle favorite state in MovieModel
-                            moviesListModel.toggleFavorite(context, trendingMovie);
-                          },
-                        ),
+                        child: FavoriteIcon(trendingMovie)
                       ),
                     ],
                   ),
@@ -97,7 +79,8 @@ class _TrendingMovieSliderState extends State<TrendingMovieSlider> {
                                       trendingMovie.movie_release_date,
                                   movie_vote_avg:
                                       trendingMovie.movie_vote_avg,
-                                  movieId: trendingMovie.id,
+                                  movieId: trendingMovie.id
+                                  
                                 )));
                   },
                 );
@@ -105,6 +88,41 @@ class _TrendingMovieSliderState extends State<TrendingMovieSlider> {
             ),
           )
         : Center(child: CircularProgressIndicator());
+  }
+}
+
+class FavoriteIcon extends StatefulWidget {
+  final Movie movie;
+
+  FavoriteIcon(this.movie);
+
+  @override
+  _FavoriteIconState createState() => _FavoriteIconState();
+}
+
+class _FavoriteIconState extends State<FavoriteIcon> {
+  @override
+  Widget build(BuildContext context) {
+    final moviesListModel = Provider.of<MovieModel>(context);
+    final saved_movies = moviesListModel.get_savedMovies;
+
+    bool isFavorite = false;
+    if (saved_movies.isNotEmpty && saved_movies.indexWhere((movie) => movie.id == widget.movie.id) >= 0) {
+      isFavorite = true;
+    } else {
+      isFavorite = false;
+    }
+
+    return GestureDetector(
+      onTap: () {
+        Provider.of<MovieModel>(context, listen: false).toggleFavorite(context, widget.movie);
+      },
+      child: Icon(
+        isFavorite ? Icons.favorite : Icons.favorite_border,
+        color: isFavorite ? Colors.red : Colors.white,
+        size: 24,
+      ),
+    );
   }
 }
 

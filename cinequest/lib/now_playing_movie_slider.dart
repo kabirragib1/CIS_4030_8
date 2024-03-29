@@ -38,7 +38,7 @@ class NowPlayingMoviesSlider extends StatelessWidget {
                             movie_synopsis: now_playing_movie.movie_synopsis,
                             movie_release_date: now_playing_movie.movie_release_date,
                             movie_vote_avg: now_playing_movie.movie_vote_avg,
-                            movieId: now_playing_movie.id,
+                            movieId: now_playing_movie.id
                           ),
                         ),
                       );
@@ -84,7 +84,16 @@ class FavoriteIcon extends StatefulWidget {
 class _FavoriteIconState extends State<FavoriteIcon> {
   @override
   Widget build(BuildContext context) {
-    bool isFavorite = widget.movie.isFavorite;
+    final moviesListModel = Provider.of<MovieModel>(context);
+    final saved_movies = moviesListModel.get_savedMovies;
+
+    bool isFavorite = false;
+    if (saved_movies.isNotEmpty && saved_movies.indexWhere((movie) => movie.id == widget.movie.id) >= 0) {
+      isFavorite = true;
+    } else {
+      isFavorite = false;
+    }
+   
     return GestureDetector(
       onTap: () {
         Provider.of<MovieModel>(context, listen: false).toggleFavorite(context, widget.movie);

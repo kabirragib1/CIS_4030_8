@@ -34,15 +34,15 @@ class MovieModel extends ChangeNotifier{
   bool get get_now_playing_movies_loaded => now_playing_movies_loaded;
 
   List<Movie> savedMovies = [];
+  List<Movie> get get_savedMovies => savedMovies;
 
   List<MovieWatchCountry> movie_watch_country_data = [];
   List<MovieWatchCountry> get get_all_countries => movie_watch_country_data;
 
   //saving movies
   void toggleFavorite(BuildContext context, Movie movie) {
-    movie.isFavorite = !movie.isFavorite;
     String message;
-    if (movie.isFavorite) {
+    if (savedMovies.indexWhere((savedMovie) => savedMovie.id == movie.id) < 0) {
       savedMovies.add(movie);
       message = 'Movie Saved';
     } else {
