@@ -61,8 +61,8 @@ class MovieInteract extends StatelessWidget {
                       style: TextStyle(fontSize: 20, color: Colors.black), // Set font size to 20 and text color to white
                     ),
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.yellow, // Button background color
-                      onPrimary: Colors.white, // Text color for button
+                      backgroundColor: Colors.yellow, // Button background color
+                      foregroundColor: Colors.white, // Text color for button
                     ),
                   ),
                 ),

@@ -51,8 +51,8 @@ class _WatchMoviePage extends State<WatchMoviePage> {
                         onPressed: (){}, 
                         child: const Text('PRIME VIDEO', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
                         style: ElevatedButton.styleFrom(
-                          primary: Color.fromARGB(255, 250, 178, 54),
-                          onPrimary: Colors.white,
+                          backgroundColor: Color.fromARGB(255, 250, 178, 54),
+                          foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50), // Rounded corners
                           ),
@@ -71,8 +71,8 @@ class _WatchMoviePage extends State<WatchMoviePage> {
                         onPressed: (){}, 
                         child: const Text('NETFLIX', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
                         style: ElevatedButton.styleFrom(
-                          primary: Color.fromARGB(255, 250, 178, 54),
-                          onPrimary: Colors.white,
+                          backgroundColor: Color.fromARGB(255, 250, 178, 54),
+                          foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50), // Rounded corners
                           ),
@@ -91,8 +91,8 @@ class _WatchMoviePage extends State<WatchMoviePage> {
                         onPressed: (){}, 
                         child: const Text('DISNEY+', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
                         style: ElevatedButton.styleFrom(
-                          primary: Color.fromARGB(255, 250, 178, 54),
-                          onPrimary: Colors.white,
+                          backgroundColor: Color.fromARGB(255, 250, 178, 54),
+                          foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50), // Rounded corners
                           ),
@@ -111,8 +111,8 @@ class _WatchMoviePage extends State<WatchMoviePage> {
                         onPressed: (){}, 
                         child: const Text('HULU', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
                         style: ElevatedButton.styleFrom(
-                          primary: Color.fromARGB(255, 250, 178, 54),
-                          onPrimary: Colors.white,
+                          backgroundColor: Color.fromARGB(255, 250, 178, 54),
+                          foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50), // Rounded corners
                           ),
@@ -131,8 +131,8 @@ class _WatchMoviePage extends State<WatchMoviePage> {
                         onPressed: (){}, 
                         child: const Text('PARAMOUNT+', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
                         style: ElevatedButton.styleFrom(
-                          primary: Color.fromARGB(255, 250, 178, 54),
-                          onPrimary: Colors.white,
+                          backgroundColor: Color.fromARGB(255, 250, 178, 54),
+                          foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50), // Rounded corners
                           ),
@@ -151,8 +151,8 @@ class _WatchMoviePage extends State<WatchMoviePage> {
                         onPressed: (){}, 
                         child: const Text('BUY ON AMAZON', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
                         style: ElevatedButton.styleFrom(
-                          primary: Color.fromARGB(255, 250, 178, 54),
-                          onPrimary: Colors.white,
+                          backgroundColor: Color.fromARGB(255, 250, 178, 54),
+                          foregroundColor: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50), // Rounded corners
                           ),
@@ -171,8 +171,8 @@ class _WatchMoviePage extends State<WatchMoviePage> {
                       onPressed: (){}, 
                       child: const Text('BUY ON YOUTUBE', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
                       style: ElevatedButton.styleFrom(
-                        primary: Color.fromARGB(255, 250, 178, 54),
-                        onPrimary: Colors.white,
+                        backgroundColor: Color.fromARGB(255, 250, 178, 54),
+                        foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50),
                         ),
