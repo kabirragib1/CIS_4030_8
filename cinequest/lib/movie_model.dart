@@ -92,6 +92,21 @@ class MovieModel extends ChangeNotifier{
 
   }
 
+  static Future<List<Movie>> searchMoviesByGenre(int genreId) async {
+    final String genreSearchUrl = 'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.API_key}&with_genres=$genreId';
+    try {
+      final response = await http.get(Uri.parse(genreSearchUrl));
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body)['results'];
+        return data.map((json) => Movie.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to load movies by genre');
+      }
+    } catch (e) {
+      throw Exception('Error fetching movies by genre: $e');
+    }
+  }
+
   void  get_trending_movies() async {
     final response = await http.get(Uri.parse(trending_movie_URL));
     if (response.statusCode == 200) {

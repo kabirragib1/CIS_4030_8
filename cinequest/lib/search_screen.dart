@@ -85,10 +85,10 @@ class _SearchScreenState extends State<SearchScreen> {
               child: DropdownButton<int>(
                 value: _selectedGenreId,
                 onChanged: (newValue) {
-                  // setState(() {
-                  //   _selectedGenreId = newValue;
-                  //   _searchMovies(_searchQuery, _selectedGenreId);
-                  // });
+                   setState(() {
+                     _selectedGenreId = newValue;
+                     _searchMovies(_searchQuery, _selectedGenreId);
+                   });
                 },
                 items: [
                   DropdownMenuItem<int>(
@@ -103,7 +103,74 @@ class _SearchScreenState extends State<SearchScreen> {
                     value: 12,
                     child: Text('Adventure'),
                   ),
-                  // Add more genres as needed
+                  DropdownMenuItem<int>(
+                    value: 16,
+                    child: Text('Animation'),
+                  ),
+                  DropdownMenuItem<int>(
+                    value: 35,
+                    child: Text('Comedy'),
+                  ),
+                  DropdownMenuItem<int>(
+                    value: 80,
+                    child: Text('Crime'),
+                  ),
+                  DropdownMenuItem<int>(
+                    value: 99,
+                    child: Text('Documentary'),
+                  ),
+                  DropdownMenuItem<int>(
+                    value: 18,
+                    child: Text('Drama'),
+                  ),
+                  DropdownMenuItem<int>(
+                    value: 10751,
+                    child: Text('Family'),
+                  ),
+                  DropdownMenuItem<int>(
+                    value: 14,
+                    child: Text('Fantasy'),
+                  ),
+                  DropdownMenuItem<int>(
+                    value: 36,
+                    child: Text('History'),
+                  ),
+                  DropdownMenuItem<int>(
+                    value: 27,
+                    child: Text('Horror'),
+                  ),
+                  DropdownMenuItem<int>(
+                    value: 10402,
+                    child: Text('Music'),
+                  ),
+                  DropdownMenuItem<int>(
+                    value: 9648,
+                    child: Text('Mystery'),
+                  ),
+                  DropdownMenuItem<int>(
+                    value: 10749,
+                    child: Text('Romance'),
+                  ),
+                  DropdownMenuItem<int>(
+                    value: 878,
+                    child: Text('Science Fiction'),
+                  ),
+                  DropdownMenuItem<int>(
+                    value: 10770,
+                    child: Text('TV Movie'),
+                  ),
+                  DropdownMenuItem<int>(
+                    value: 53,
+                    child: Text('Thriller'),
+                  ),
+                  DropdownMenuItem<int>(
+                    value: 10752,
+                    child: Text('War'),
+                  ),
+                  DropdownMenuItem<int>(
+                    value: 37,
+                    child: Text('Western'),
+                  ),
                 ],
               ),
             ),
@@ -154,9 +221,17 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Future<void> _searchMovies(String query) async {
+  Future<void> _searchMovies(String query, [int? genreId]) async {
     try {
-      final searchResults = await MovieModel.searchMovies(query);
+      List<Movie> searchResults = [];
+      if (genreId != null) {
+        // Implement logic to search movies by genre
+        searchResults = await MovieModel.searchMoviesByGenre(genreId);
+      } else {
+        // Existing logic to search by movie title
+        searchResults = await MovieModel.searchMovies(query);
+      }
+
       setState(() {
         _searchResults = searchResults;
       });
