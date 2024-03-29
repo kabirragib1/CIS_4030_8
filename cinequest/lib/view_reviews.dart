@@ -23,14 +23,11 @@ class ViewReviewPage extends StatefulWidget {
 class _ViewReviewPageState extends State<ViewReviewPage> {
   List<dynamic> reviews = [];
   bool isLoading = true;
-  String dropdownValue = 'Reviews from our app'; //Set default dropdown option
 
   @override
   void initState() {
     super.initState();
-    if (dropdownValue == 'Reviews from our app') {
-      fetchReviews();
-    }
+    fetchReviews();
   }
 
   Future<void> fetchReviews() async {
@@ -87,44 +84,6 @@ class _ViewReviewPageState extends State<ViewReviewPage> {
                     padding: EdgeInsets.all(10.0),
                     child: Text('FILM SCORE: ${widget.movie_vote_avg.toStringAsFixed(2)}/10.0', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold))
                 ),
-                //Dropdown Menu
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0), 
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.white), // Adds a white border
-                    borderRadius: BorderRadius.circular(4.0),
-                  ),
-                  child: DropdownButton<String>(
-                    value: dropdownValue,
-                    icon: const Icon(Icons.arrow_downward, color: Colors.white),
-                    elevation: 16,
-                    dropdownColor: Colors.black, // Change dropdown background color
-                    style: const TextStyle(color: Colors.white),
-                    underline: Container(
-                      height: 0, 
-                    ),
-                    onChanged: (String? newValue) { 
-                      if (newValue != null) { 
-                        setState(() {
-                          dropdownValue = newValue;
-                        });
-                        if (newValue == 'Reviews from our app') {
-                          fetchReviews(); // Fetch reviews when 'Reviews from our app' is selected
-                        } else {
-                          reviews.clear(); // Clear reviews for other options
-                          isLoading = false;
-                        }
-                      }
-                    },
-                    items: <String>['Reviews from IMDb', 'Reviews from Rotten Tomatoes', 'Reviews from our app']
-                        .map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value, style: TextStyle(color: Colors.white)), // Text color inside the dropdown
-                      );
-                    }).toList(),
-                  ),
-                ),
                 const Divider(
                   thickness: 3.0,
                   indent: 10.0,
@@ -139,45 +98,40 @@ class _ViewReviewPageState extends State<ViewReviewPage> {
               ],
             ),
           ),
-          if (dropdownValue == 'Reviews from our app' && !isLoading) 
-            SliverPadding(
-              padding: const EdgeInsets.all(10.0),
-              sliver: SliverList(
-                delegate: SliverChildBuilderDelegate(
-                  (context, index) {
-                    final review = reviews[index];
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 20.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            review['author'] ?? 'Unknown',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                          ),
-                          SizedBox(height: 5),
-                          Row(
-                            children: List.generate(5, (starIndex) {
-                              return Icon(
-                                starIndex < (review['author_details']['rating'] ?? 0) / 2 ? Icons.star : Icons.star_border,
-                                color: Colors.yellow,
-                              );
-                            }),
-                          ),
-                          SizedBox(height: 10),
-                          Text(review['content'] ?? 'No review text.'),
-                        ],
-                      ),
-                    );
-                  },
-                  childCount: reviews.length,
-                ),
+          SliverPadding(
+            padding: const EdgeInsets.all(10.0),
+            sliver: isLoading ? SliverToBoxAdapter(child: Center(child: CircularProgressIndicator())) : SliverList(
+              delegate: SliverChildBuilderDelegate(
+                    (context, index) {
+                  final review = reviews[index];
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 20.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          review['author'] ?? 'Unknown',
+                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                        SizedBox(height: 5),
+                        Row(
+                          children: List.generate(5, (starIndex) {
+                            return Icon(
+                              starIndex < (review['author_details']['rating'] ?? 0) / 2 ? Icons.star : Icons.star_border,
+                              color: Colors.yellow,
+                            );
+                          }),
+                        ),
+                        SizedBox(height: 10),
+                        Text(review['content'] ?? 'No review text.'),
+                      ],
+                    ),
+                  );
+                },
+                childCount: reviews.length,
               ),
-            )
-          else 
-            // When 'Reviews from IMDb' or 'Reviews from Rotten Tomatoes' is selected
-            // or when isLoading is true, show an empty or placeholder widget
-            SliverToBoxAdapter(child: SizedBox.shrink())
+            ),
+          ),
         ],
       ),
     );
