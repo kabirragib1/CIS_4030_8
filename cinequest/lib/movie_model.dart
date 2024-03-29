@@ -107,6 +107,21 @@ class MovieModel extends ChangeNotifier{
     }
   }
 
+  static Future<List<Movie>> searchMoviesByName(String query) async {
+    final String nameSearchUrl = 'https://api.themoviedb.org/3/search/movie?api_key=${Constants.API_key}&query=${query}';
+    try {
+      final response = await http.get(Uri.parse(nameSearchUrl));
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body)['results'];
+        return data.map((json) => Movie.fromJson(json)).toList();
+      } else {
+        throw Exception('Failed to load movies by genre');
+      }
+    } catch (e) {
+      throw Exception('Error fetching movies by genre: $e');
+    }
+  }
+
   void  get_trending_movies() async {
     final response = await http.get(Uri.parse(trending_movie_URL));
     if (response.statusCode == 200) {
@@ -213,48 +228,8 @@ class MovieModel extends ChangeNotifier{
     final List<Movie> searchResults = [];
     try {
       // fetch trending movies
-      final trendingMovies = await _fetchTrendingMovies();
-      for (final movie in trendingMovies) {
-        if (!addedMovieIds.contains(movie.id) &&
-            movie.movie_title.toLowerCase().contains(query.toLowerCase())) {
-          searchResults.add(movie);
-          addedMovieIds.add(movie.id);
-        }
-      }
-
-      // fetch popular movies
-      final popularMovies = await _fetchMoviesByPopularity();
-      for (final movie in popularMovies) {
-        if (!addedMovieIds.contains(movie.id) &&
-            movie.movie_title.toLowerCase().contains(query.toLowerCase())) {
-          searchResults.add(movie);
-          addedMovieIds.add(movie.id);
-        }
-      }
-
-      // fetch now playing movies 
-      final nowPlayingMovies = await _fetchNowPlayingMovies();
-      for (final movie in nowPlayingMovies) {
-        if (!addedMovieIds.contains(movie.id) &&
-            movie.movie_title.toLowerCase().contains(query.toLowerCase())) {
-          searchResults.add(movie);
-          addedMovieIds.add(movie.id);
-        }
-      }
-
-      // fetch upcoming movies 
-      final upcomingMovies = await _fetchUpcomingMovies();
-      for (final movie in upcomingMovies) {
-        if (!addedMovieIds.contains(movie.id) &&
-            movie.movie_title.toLowerCase().contains(query.toLowerCase())) {
-          searchResults.add(movie);
-          addedMovieIds.add(movie.id);
-        }
-      }
-
-      // fetch top rated movies 
-      final topRatedMovies = await _fetchTopRatedMovies();
-      for (final movie in topRatedMovies) {
+      final searchMovies = await searchMoviesByName(query);
+      for (final movie in searchMovies) {
         if (!addedMovieIds.contains(movie.id) &&
             movie.movie_title.toLowerCase().contains(query.toLowerCase())) {
           searchResults.add(movie);
@@ -264,111 +239,6 @@ class MovieModel extends ChangeNotifier{
       return searchResults;
     } catch (e) {
       throw Exception('Error searching movies: $e');
-    }
-  }
-
-  // trending movies 
-  static Future<List<Movie>> _fetchTrendingMovies() async {
-    final Map<int, Movie> trendingMoviesMap = {};
-    try {
-      final response = await http.get(Uri.parse(trending_movie_URL));
-      if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body)['results'];
-        data.forEach((json) {
-          final movie = Movie.fromJson(json);
-          trendingMoviesMap[movie.id] = movie;
-        });
-        return trendingMoviesMap.values.toList();
-      } else {
-        throw Exception('Failed to load trending movies');
-      }
-    } catch (e) {
-      throw Exception('Error fetching trending movies: $e');
-    }
-  }
-
-  // popular movies
-  static Future<List<Movie>> _fetchMoviesByPopularity() async {
-    final Map<int, Movie> popularMoviesMap = {};
-    try {
-      final response = await http.get(Uri.parse(popular_movie_URL));
-      if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body)['results'];
-        data.forEach((json) {
-          final movie = Movie.fromJson(json);
-          popularMoviesMap[movie.id] = movie;
-        });
-        return popularMoviesMap.values.toList();
-      } else {
-        throw Exception('Failed to load popular movies');
-      }
-    } catch (e) {
-      throw Exception('Error fetching popular movies: $e');
-    }
-  }
-
-  // now playing movies 
-  static Future<List<Movie>> _fetchNowPlayingMovies() async {
-    final Map<int, Movie> nowPlaingMoviesMap = {};
-    try {
-      final response = await http.get(Uri.parse(now_playing_movie_URL));
-      if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body)['results'];
-        data.forEach((json) {
-          final movie = Movie.fromJson(json);
-          nowPlaingMoviesMap[movie.id] = movie;
-        });
-        return nowPlaingMoviesMap.values.toList();
-      } else {
-        throw Exception('Failed to load now playing movies');
-      }
-    } catch (e) {
-      throw Exception('Error fetching now playing movies: $e');
-    }
-  }
-
-  // upcoming movies 
-  static Future<List<Movie>> _fetchUpcomingMovies() async {
-    final Map<int, Movie> upcomingMoviesMap = {};
-    const apiKey = Constants.API_key;
-    final current_date = DateTime.now();
-    String current_date_str = current_date.toIso8601String();
-    final apiUrl = 'https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&primary_release_date.gte=${current_date_str.split('T')[0]}';
-    try {
-      final response = await http.get(Uri.parse(apiUrl));
-      if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body)['results'];
-        data.forEach((json) {
-          final movie = Movie.fromJson(json);
-          upcomingMoviesMap[movie.id] = movie;
-        });
-        return upcomingMoviesMap.values.toList();
-      } else {
-        throw Exception('Failed to load upcoming movies');
-      }
-    } catch (e) {
-      throw Exception('Error fetching upcoming movies: $e');
-    }
-  }
-
-  // top rated movies 
-  static Future<List<Movie>> _fetchTopRatedMovies() async {
-    final Map<int, Movie>  topRatedMoviesMap = {};
-  
-    try {
-      final response = await http.get(Uri.parse(top_rated_movie_URL));
-      if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body)['results'];
-        data.forEach((json) {
-          final movie = Movie.fromJson(json);
-          topRatedMoviesMap[movie.id] = movie;
-        });
-        return topRatedMoviesMap.values.toList();
-      } else {
-        throw Exception('Failed to load upcoming movies');
-      }
-    } catch (e) {
-      throw Exception('Error fetching upcoming movies: $e');
     }
   }
 }
