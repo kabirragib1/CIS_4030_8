@@ -255,8 +255,6 @@ class MovieModel extends ChangeNotifier{
   // trending movies 
   static Future<List<Movie>> _fetchTrendingMovies() async {
     final Map<int, Movie> trendingMoviesMap = {};
-    // const apiKey = Constants.API_key;
-    // const apiUrl = 'https://api.themoviedb.org/3/trending/movie/week?api_key=$apiKey';
     try {
       final response = await http.get(Uri.parse(trending_movie_URL));
       if (response.statusCode == 200) {
@@ -277,8 +275,6 @@ class MovieModel extends ChangeNotifier{
   // popular movies
   static Future<List<Movie>> _fetchMoviesByPopularity() async {
     final Map<int, Movie> popularMoviesMap = {};
-    // const apiKey = Constants.API_key;
-    // const apiUrl = 'https://api.themoviedb.org/3/movie/popular?api_key=$apiKey';
     try {
       final response = await http.get(Uri.parse(popular_movie_URL));
       if (response.statusCode == 200) {
@@ -299,8 +295,6 @@ class MovieModel extends ChangeNotifier{
   // now playing movies 
   static Future<List<Movie>> _fetchNowPlayingMovies() async {
     final Map<int, Movie> nowPlaingMoviesMap = {};
-    // const apiKey = Constants.API_key;
-    // const apiUrl = 'https://api.themoviedb.org/3/movie/now_playing?api_key=$apiKey';
     try {
       final response = await http.get(Uri.parse(now_playing_movie_URL));
       if (response.statusCode == 200) {
@@ -345,8 +339,7 @@ class MovieModel extends ChangeNotifier{
   // top rated movies 
   static Future<List<Movie>> _fetchTopRatedMovies() async {
     final Map<int, Movie>  topRatedMoviesMap = {};
-    // const apiKey = Constants.API_key;
-    // final apiUrl = 'https://api.themoviedb.org/3/movie/top_rated?api_key=$apiKey';
+  
     try {
       final response = await http.get(Uri.parse(top_rated_movie_URL));
       if (response.statusCode == 200) {
@@ -363,5 +356,4 @@ class MovieModel extends ChangeNotifier{
       throw Exception('Error fetching upcoming movies: $e');
     }
   }
-
 }

@@ -12,6 +12,8 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   List<Movie> _searchResults = [];
   String _searchQuery = '';
+  int? _selectedGenreId; // Define selectedGenreId variable
+  String _searchType = 'Search By...'; // Default search type
 
   @override
   Widget build(BuildContext context) {
@@ -30,18 +32,81 @@ class _SearchScreenState extends State<SearchScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              onChanged: (value) {
+            child: DropdownButton<String>(
+              value: _searchType,
+              onChanged: (newValue) {
                 setState(() {
-                  _searchQuery = value;
-                  _searchMovies(value);
+                  _searchType = newValue!;
+                  if (_searchType == 'Search By...') {
+                    // Reset search type and query
+                    _searchType = 'Search By...';
+                    _searchQuery = '';
+                  } else if (_searchType == 'Search By Genre') {
+                    // Reset search query and selected genre ID
+                    _searchQuery = '';
+                    _selectedGenreId = null;
+                  }
                 });
               },
-              decoration: InputDecoration(
-                hintText: 'Search...',
-              ),
+              items: [
+                DropdownMenuItem<String>(
+                  value: 'Search By...',
+                  child: Text('Search By...'),
+                ),
+                DropdownMenuItem<String>(
+                  value: 'Search By Movie Name',
+                  child: Text('Search By Movie Name'),
+                ),
+                DropdownMenuItem<String>(
+                  value: 'Search By Genre',
+                  child: Text('Search By Genre'),
+                ),
+              ],
             ),
           ),
+          if (_searchType == 'Search By Movie Name')
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+               onChanged: (value) {
+                  setState(() {
+                    _searchQuery = value;
+                    _searchMovies(value);
+                  });
+                },
+                decoration: InputDecoration(
+                  hintText: 'Search By Movie Name...',
+                ),
+              ),
+            ),
+          if (_searchType == 'Search By Genre')
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: DropdownButton<int>(
+                value: _selectedGenreId,
+                onChanged: (newValue) {
+                  // setState(() {
+                  //   _selectedGenreId = newValue;
+                  //   _searchMovies(_searchQuery, _selectedGenreId);
+                  // });
+                },
+                items: [
+                  DropdownMenuItem<int>(
+                    value: null,
+                    child: Text('All Genres'),
+                  ),
+                  DropdownMenuItem<int>(
+                    value: 28,
+                    child: Text('Action'),
+                  ),
+                  DropdownMenuItem<int>(
+                    value: 12,
+                    child: Text('Adventure'),
+                  ),
+                  // Add more genres as needed
+                ],
+              ),
+            ),
           Expanded(
             child: ListView.builder(
               itemCount: _searchResults.length,
@@ -59,7 +124,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           movie_synopsis: movie.movie_synopsis,
                           movie_release_date: movie.movie_release_date,
                           movie_vote_avg: movie.movie_vote_avg,
-                          movieId: movie.id
+                          movieId: movie.id,
                         ),
                       ),
                     );
