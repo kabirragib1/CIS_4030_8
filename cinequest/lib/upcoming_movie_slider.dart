@@ -1,5 +1,6 @@
 //upcoming_movie
 import 'package:cinequest/constants.dart';
+import 'package:cinequest/movie.dart';
 import 'package:cinequest/movie_model.dart';
 import 'package:cinequest/movie_page.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,7 @@ class UpcomingMoviesSlider extends StatelessWidget {
                             movie_synopsis: upcoming_movie.movie_synopsis,
                             movie_release_date: upcoming_movie.movie_release_date,
                             movie_vote_avg: upcoming_movie.movie_vote_avg,
-                            movieId: upcoming_movie.id,
+                            movieId: upcoming_movie.id
                           ),
                         ),
                       );
@@ -61,10 +62,7 @@ class UpcomingMoviesSlider extends StatelessWidget {
                           top: 5,
                           right: 5,
                           child: FavoriteIcon(
-                            isFavorite: upcoming_movie.isFavorite,
-                            onFavoriteChanged: (isFavorite) {
-                              moviesListModel.toggleFavorite(context, upcoming_movie);
-                            },
+                           upcoming_movie
                           ),
                         ),
                       ],
@@ -78,20 +76,31 @@ class UpcomingMoviesSlider extends StatelessWidget {
   }
 }
 
-class FavoriteIcon extends StatelessWidget {
-  final bool isFavorite;
-  final Function(bool) onFavoriteChanged;
+class FavoriteIcon extends StatefulWidget {
+  final Movie movie;
 
-  const FavoriteIcon({
-    required this.isFavorite,
-    required this.onFavoriteChanged,
-  });
+  FavoriteIcon(this.movie);
 
   @override
+  _FavoriteIconState createState() => _FavoriteIconState();
+}
+
+class _FavoriteIconState extends State<FavoriteIcon> {
+  @override
   Widget build(BuildContext context) {
+    final moviesListModel = Provider.of<MovieModel>(context);
+    final saved_movies = moviesListModel.get_savedMovies;
+
+    bool isFavorite = false;
+    if (saved_movies.isNotEmpty && saved_movies.indexWhere((movie) => movie.id == widget.movie.id) >= 0) {
+      isFavorite = true;
+    } else {
+      isFavorite = false;
+    }
+
     return GestureDetector(
       onTap: () {
-        onFavoriteChanged(!isFavorite);
+        Provider.of<MovieModel>(context, listen: false).toggleFavorite(context, widget.movie);
       },
       child: Icon(
         isFavorite ? Icons.favorite : Icons.favorite_border,
@@ -101,4 +110,3 @@ class FavoriteIcon extends StatelessWidget {
     );
   }
 }
-

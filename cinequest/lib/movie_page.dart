@@ -151,6 +151,7 @@ class _MoviePageState extends State<MoviePage> {
   Widget build(BuildContext context) {
     final moviesListModel = Provider.of<MovieModel>(context);
     final movie_watch_country_data = moviesListModel.get_all_countries;
+    final saved_movies = moviesListModel.get_savedMovies;
 
     return Scaffold(
       appBar: AppBar(
@@ -471,7 +472,9 @@ class _MoviePageState extends State<MoviePage> {
                         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Button padding
                       )
                     ),
-                    ElevatedButton(
+                    const SizedBox(height: 15),
+                    saved_movies.indexWhere((movie) => movie.id == widget.movieId) < 0 
+                    ? ElevatedButton(
                       onPressed: () {
                         final movie = Movie(
                           widget.movie_title,
@@ -481,7 +484,7 @@ class _MoviePageState extends State<MoviePage> {
                           widget.movie_synopsis,
                           widget.movie_release_date,
                           widget.movie_vote_avg,
-                          widget.movieId,
+                          widget.movieId
                         );
                         Provider.of<MovieModel>(context, listen: false).toggleFavorite(context, movie);
                       },
@@ -497,8 +500,35 @@ class _MoviePageState extends State<MoviePage> {
                         ),
                         padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Button padding
                       ),
+                    ) 
+                    : ElevatedButton(
+                      onPressed: () {
+                        final movie = Movie(
+                          widget.movie_title,
+                          '',
+                          widget.movie_image_path,
+                          '',
+                          widget.movie_synopsis,
+                          widget.movie_release_date,
+                          widget.movie_vote_avg,
+                          widget.movieId
+                        );
+                        Provider.of<MovieModel>(context, listen: false).toggleFavorite(context, movie);
+                      },
+                      child: Text(
+                        'UNLIKE MOVIE',
+                        style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Color.fromARGB(255, 250, 178, 54),
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(50), // Rounded corners
+                        ),
+                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Button padding
+                      ),
                     ),
-
+                    const SizedBox(height: 15),
                     // const SizedBox(height: 15),
                     // Row(
                     //     mainAxisAlignment: MainAxisAlignment.center,

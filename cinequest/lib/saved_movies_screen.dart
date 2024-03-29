@@ -38,12 +38,7 @@ class SavedMoviesScreen extends StatelessWidget {
                     height: 50,
                   ),
                    trailing: IconButton(
-                    icon: Icon(
-                      savedMovie.isFavorite
-                          ? Icons.favorite
-                          : Icons.favorite_border,
-                      color: savedMovie.isFavorite ? Colors.red : null,
-                    ),
+                    icon: Icon(Icons.favorite, color: Colors.red),
                     onPressed: () {
                       moviesListModel.toggleFavorite(context, savedMovie);
                     },
@@ -59,7 +54,7 @@ class SavedMoviesScreen extends StatelessWidget {
                           movie_synopsis: savedMovie.movie_synopsis,
                           movie_release_date: savedMovie.movie_release_date,
                           movie_vote_avg: savedMovie.movie_vote_avg,
-                          movieId: savedMovie.id,
+                          movieId: savedMovie.id
                         ),
                       ),
                     );
