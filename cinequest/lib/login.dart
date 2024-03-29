@@ -1,8 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:cinequest/home_screen.dart'; 
-import 'forgot_password_screen.dart'; 
+import 'package:cinequest/home_screen.dart';
+import 'forgot_password_screen.dart';
+import 'mongodb.dart'; // Make sure this import points to your MongoDatabase class
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +33,7 @@ class LoginPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 40), // Add some space at the top
+            SizedBox(height: 40),
             Center(
               child: Image.asset(
                 'assets/images/movie_4831192.png',
@@ -34,95 +50,96 @@ class LoginPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 20),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 20),
-                  child: Text(
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
                     'EMAIL',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                ),
-                SizedBox(height: 10),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: TextFormField(
+                  SizedBox(height: 10),
+                  TextFormField(
+                    controller: _emailController,
                     decoration: InputDecoration(
-                      hintText: '',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4.0),
-                      ),
+                      hintText: 'Enter Email',
+                      border: OutlineInputBorder(),
                       contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                     ),
                   ),
-                ),
-                SizedBox(height: 20),
-                Padding(
-                  padding: EdgeInsets.only(left: 20),
-                  child: Text(
+                  SizedBox(height: 20),
+                  Text(
                     'PASSWORD',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
-                ),
-                SizedBox(height: 10),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: TextFormField(
+                  SizedBox(height: 10),
+                  TextFormField(
+                    controller: _passwordController,
                     obscureText: true, // This will hide the entered text
                     decoration: InputDecoration(
-                      hintText: '',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(4.0),
-                      ),
+                      hintText: 'Enter Password',
+                      border: OutlineInputBorder(),
                       contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                     ),
                   ),
-                ),
-                SizedBox(height: 20),
-                SizedBox(height: 60), // Add some space above the button
-                Center( // Align the button in the middle horizontally
-                  child: ElevatedButton(
-                    onPressed: () {
-                      // Navigate to home page instead of login page
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(300, 50),
+                  SizedBox(height: 60),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        final String email = _emailController.text;
+                        final String password = _passwordController.text;
+
+                        final user = await MongoDatabase.findUserByEmail(email);
+
+                        if (user != null && user['password'] == password) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => HomeScreen()),
+                          );
+                        } else {
+                          showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: Text('Login Failed'),
+                              content: Text('Invalid email or password.'),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: Text('OK'),
+                                ),
+                              ],
+                            ),
+                          );
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(300, 50),
+                      ),
+                      child: Text('LOGIN', style: TextStyle(fontSize: 20)),
                     ),
-                    child: Text('LOGIN', style: TextStyle(fontSize: 20)),
                   ),
-                ),
-                SizedBox(height: 10), // Add some space between login button and forgot password
-                Center(
-                  child: TextButton(
-                    onPressed: () {
-                      // Navigate to forgot password page
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => ForgotPasswordScreen()),
-                      );
-                    },
-                    child: Text(
-                      'FORGOT PASSWORD?',
-                      style: TextStyle(
-                        fontSize: 16,
-                        decoration: TextDecoration.underline, // Underline the text
-                        color: Colors.white, // Set hyperlink color
+                  SizedBox(height: 10),
+                  Center(
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ForgotPasswordScreen()),
+                        );
+                      },
+                      child: Text(
+                        'FORGOT PASSWORD?',
+                        style: TextStyle(
+                          fontSize: 16,
+                          decoration: TextDecoration.underline,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

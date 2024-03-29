@@ -4,13 +4,22 @@ import 'package:mongo_dart/mongo_dart.dart';
 import 'constant.dart';
 
 class MongoDatabase {
-  static connect() async {
-    var db = await Db.create(MONGO_URL);
-    await db.open();
+  static Db? db;
+
+  static Future<void> connect() async {
+    db = await Db.create(MONGO_URL);
+    await db?.open();
     inspect(db);
-    var status = db.serverStatus();
-    print(status);
-    var collection = db.collection(COLLECTION_NAME);
-    print (await collection.find().toList());
+  }
+
+  static Future<void> insertUser(Map<String, dynamic> userData) async {
+    var collection = db?.collection(COLLECTION_NAME);
+    await collection?.insertOne(userData);
+  }
+
+  static Future<Map<String, dynamic>?> findUserByEmail(String email) async {
+    var collection = db?.collection(COLLECTION_NAME);
+    final user = await collection?.findOne(where.eq('email', email));
+    return user;
   }
 }

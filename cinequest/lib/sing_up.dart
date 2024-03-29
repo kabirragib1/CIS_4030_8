@@ -1,16 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:cinequest/home_screen.dart'; // Import the HomeScreen widget
-import 'package:cinequest/sign_quiz.dart'; // Import the HomeScreen widget
+import 'package:cinequest/home_screen.dart';
+import 'package:cinequest/mongodb.dart'; // Make sure to import your MongoDB database utility class
+import 'package:cinequest/sign_quiz.dart';
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
+  @override
+  _SignUpState createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
+  // Create a text editing controller for each form field
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Dispose the controllers when the widget is removed from the widget tree
+    _usernameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: true, // This will keep the back arrow
-        title: Text(''), // Empty title to hide the header
-        backgroundColor: Colors.transparent, // Set background color to transparent
-        elevation: 0, // Remove the shadow
+        automaticallyImplyLeading: true,
+        title: Text(''),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -49,6 +69,7 @@ class SignUp extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   TextFormField(
+                    controller: _usernameController,
                     decoration: InputDecoration(
                       hintText: 'Enter Username',
                       border: OutlineInputBorder(),
@@ -66,6 +87,7 @@ class SignUp extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   TextFormField(
+                    controller: _emailController,
                     decoration: InputDecoration(
                       hintText: 'Enter Email',
                       border: OutlineInputBorder(),
@@ -83,6 +105,7 @@ class SignUp extends StatelessWidget {
                   ),
                   SizedBox(height: 10),
                   TextFormField(
+                    controller: _passwordController,
                     obscureText: true,
                     decoration: InputDecoration(
                       hintText: 'Enter Password',
@@ -94,8 +117,21 @@ class SignUp extends StatelessWidget {
                   // Submit Button
                   Center(
                     child: ElevatedButton(
-                      onPressed: () {
-                        // Define what happens when the button is pressed
+                      onPressed: () async {
+                        // Here, you'll capture the user input from the controllers
+                        final String username = _usernameController.text;
+                        final String email = _emailController.text;
+                        final String password = _passwordController.text; // Consider hashing this password
+
+                        // You can now use these values to insert the user into your MongoDB database
+                        // For example:
+                        await MongoDatabase.insertUser({
+                          'username': username,
+                          'email': email,
+                          'password': password, // Make sure to hash the password before storing it
+                        });
+
+                        // After inserting the user, navigate to the next screen
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => SignUpQuiz()),
