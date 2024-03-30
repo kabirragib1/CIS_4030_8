@@ -17,6 +17,18 @@ class MongoDatabase {
     await collection?.insertOne(userData);
   }
 
+  static Future<bool> checkUserExistsByUsername(String username) async {
+    var collection = db?.collection(COLLECTION_NAME);
+    final result = await collection?.findOne(where.eq('username', username));
+    return result != null; // Returns true if a user exists with the given username
+  }
+
+  static Future<bool> checkUserExistsByEmail(String email) async {
+    var collection = db?.collection(COLLECTION_NAME);
+    final result = await collection?.findOne(where.eq('email', email));
+    return result != null; // Returns true if a user exists with the given email
+  }
+
   static Future<Map<String, dynamic>?> findUserByEmail(String email) async {
     var collection = db?.collection(COLLECTION_NAME);
     final user = await collection?.findOne(where.eq('email', email));
@@ -80,3 +92,5 @@ class MongoDatabase {
 
 
 }
+
+
