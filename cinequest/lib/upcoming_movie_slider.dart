@@ -37,7 +37,8 @@ class UpcomingMoviesSlider extends StatelessWidget {
                             movie_synopsis: upcoming_movie.movie_synopsis,
                             movie_release_date: upcoming_movie.movie_release_date,
                             movie_vote_avg: upcoming_movie.movie_vote_avg,
-                            movieId: upcoming_movie.id
+                            movieId: upcoming_movie.id,
+                            movie_original_title: upcoming_movie.movie_original_title,
                           ),
                         ),
                       );

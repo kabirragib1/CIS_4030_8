@@ -46,7 +46,7 @@ class MovieModel extends ChangeNotifier{
   List<MovieWatchCountry> movie_watch_country_data = [];
   List<MovieWatchCountry> get get_all_countries => movie_watch_country_data;
 
-  Future<void> loadSavedMovies() async {
+  void loadSavedMovies() async {
     try {
       // Retrieve the list of favorite movies as a list of maps
       List<Map<String, dynamic>> movieMaps = await MongoDatabase.getFavoriteMovies(_userEmail);
@@ -88,7 +88,7 @@ class MovieModel extends ChangeNotifier{
       message = 'Movie Removed'; // Assign a value to message
     }
     notifyListeners();
-    await loadSavedMovies();
+    loadSavedMovies();
     notifyListeners();
 
 

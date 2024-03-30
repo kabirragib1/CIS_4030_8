@@ -192,6 +192,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           movie_release_date: movie.movie_release_date,
                           movie_vote_avg: movie.movie_vote_avg,
                           movieId: movie.id,
+                          movie_original_title: movie.movie_original_title,
                         ),
                       ),
                     );

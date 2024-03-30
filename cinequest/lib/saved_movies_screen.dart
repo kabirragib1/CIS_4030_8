@@ -9,7 +9,7 @@ class SavedMoviesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final moviesListModel = Provider.of<MovieModel>(context);
-    final savedMovies = moviesListModel.savedMovies;
+    final savedMovies = moviesListModel.get_savedMovies;
 
     return Scaffold(
       appBar: AppBar(
@@ -54,7 +54,8 @@ class SavedMoviesScreen extends StatelessWidget {
                           movie_synopsis: savedMovie.movie_synopsis,
                           movie_release_date: savedMovie.movie_release_date,
                           movie_vote_avg: savedMovie.movie_vote_avg,
-                          movieId: savedMovie.id
+                          movieId: savedMovie.id,
+                          movie_original_title: savedMovie.movie_original_title,
                         ),
                       ),
                     );
