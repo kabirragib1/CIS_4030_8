@@ -38,7 +38,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                 children: [
                   _buildTextField('ENTER YOUR EMAIL'),
                   SizedBox(height: 20),
-                  _buildTextField('ENTER PASSWORD', obscureText: true),
+                  _buildTextField('ENTER YOUR USERNAME', obscureText: true),
                   SizedBox(height: 20),
                   _buildTextField('ENTER NEW PASSWORD', obscureText: true),
                   SizedBox(height: 20),
