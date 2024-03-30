@@ -6,11 +6,16 @@ import 'package:cinequest/movie.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
+import 'mongodb.dart';
+
 class MovieModel extends ChangeNotifier{
+  String _userEmail = '';
+  List<Movie> _savedMovies = [];
   static const trending_movie_URL = 'https://api.themoviedb.org/3/trending/movie/day?api_key=${Constants.API_key}';
   static const top_rated_movie_URL = 'https://api.themoviedb.org/3/movie/top_rated?api_key=${Constants.API_key}';
   static const now_playing_movie_URL = 'https://api.themoviedb.org/3/movie/now_playing?api_key=${Constants.API_key}';
     static const popular_movie_URL = 'https://api.themoviedb.org/3/movie/popular?api_key=${Constants.API_key}';
+
 
   // static const now_playing_movie_URL = 'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_release_type=2|3&release_date.gte={min_date}&release_date.lte={max_date}&api_key=${Constants.API_key}';
   static const countries_names_URL = 'https://api.themoviedb.org/3/configuration/countries?api_key=${Constants.API_key}';
@@ -41,17 +46,45 @@ class MovieModel extends ChangeNotifier{
   List<MovieWatchCountry> movie_watch_country_data = [];
   List<MovieWatchCountry> get get_all_countries => movie_watch_country_data;
 
+  Future<void> loadSavedMovies() async {
+    try {
+      // Retrieve the list of favorite movies as a list of maps
+      List<Map<String, dynamic>> movieMaps = await MongoDatabase.getFavoriteMovies(_userEmail);
+
+      // Convert the list of maps to a list of Movie objects
+      savedMovies = movieMaps.map((movieMap) => Movie.fromJson(movieMap)).toList();
+
+      notifyListeners();
+    } catch (e) {
+      print('Error loading saved movies: $e');
+      // Handle any errors, possibly by notifying the user
+    }
+  }
+
+  void setUserEmail(String email) {
+    _userEmail = email;
+    loadSavedMovies();
+    notifyListeners();
+  }
+
+  String get userEmail => _userEmail;
+
   //saving movies
-  void toggleFavorite(BuildContext context, Movie movie) {
-    String message;
+  void toggleFavorite(BuildContext context, Movie movie) async {
+    String message; // Declare the message variable
+
     if (savedMovies.indexWhere((savedMovie) => savedMovie.id == movie.id) < 0) {
       savedMovies.add(movie);
-      message = 'Movie Saved';
+      await MongoDatabase.addFavoriteMovie(_userEmail, movie.id);
+      message = 'Movie Saved'; // Assign a value to message
     } else {
       savedMovies.removeWhere((savedMovie) => savedMovie.id == movie.id);
-      message = 'Movie Removed';
+      await MongoDatabase.removeFavoriteMovie(_userEmail, movie.id);
+      message = 'Movie Removed'; // Assign a value to message
+      await loadSavedMovies();
     }
     notifyListeners();
+
 
     // Create a GlobalKey for the AlertDialog
     final GlobalKey<State> _alertDialogKey = GlobalKey<State>();

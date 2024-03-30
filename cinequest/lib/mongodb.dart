@@ -24,10 +24,12 @@ class MongoDatabase {
   }
 
   // Add a movie to the user's favorites
-  static Future<void> addFavoriteMovie(String userEmail, Map<String, dynamic> movieData) async {
+  static Future<void> addFavoriteMovie(String userEmail, int movieId) async {
     var collection = db?.collection(FAVORITES_COLLECTION_NAME);
-    // Include user email to identify the user who saved the movie
-    final document = {'userEmail': userEmail, ...movieData};
+    final document = {
+      'userEmail': userEmail,
+      'movieId': movieId
+    };
     await collection?.insertOne(document);
   }
 

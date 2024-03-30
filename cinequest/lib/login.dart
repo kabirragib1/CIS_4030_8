@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:cinequest/home_screen.dart';
+import 'package:provider/provider.dart';
 import 'forgot_password_screen.dart';
-import 'mongodb.dart'; // Make sure this import points to your MongoDatabase class
+import 'mongodb.dart';
+import 'movie_model.dart'; // Make sure this import points to your MongoDatabase class
 
 class LoginPage extends StatefulWidget {
   @override
@@ -93,6 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                         final user = await MongoDatabase.findUserByEmail(email);
 
                         if (user != null && user['password'] == password) {
+                          Provider.of<MovieModel>(context, listen: false).setUserEmail(email);
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => HomeScreen(userEmail: email)),
