@@ -73,16 +73,22 @@ class MovieModel extends ChangeNotifier{
   void toggleFavorite(BuildContext context, Movie movie) async {
     String message; // Declare the message variable
 
-    if (savedMovies.indexWhere((savedMovie) => savedMovie.id == movie.id) < 0) {
+    int index = savedMovies.indexWhere((savedMovie) => savedMovie.id == movie.id);
+    if (index < 0) {
+      // If not, save it
       savedMovies.add(movie);
-      await MongoDatabase.addFavoriteMovie(_userEmail, movie.id);
+      // Use the appropriate method based on the information you have (ID or full data)
+      await MongoDatabase.addFavoriteMovieByData(_userEmail, movie.toJson());
       message = 'Movie Saved'; // Assign a value to message
     } else {
-      savedMovies.removeWhere((savedMovie) => savedMovie.id == movie.id);
-      await MongoDatabase.removeFavoriteMovie(_userEmail, movie.id);
+      // If it is saved, remove it
+      savedMovies.removeAt(index);
+      // Use the method that removes by matching the full data structure
+      await MongoDatabase.removeFavoriteMovieByData(_userEmail, movie.toJson());
       message = 'Movie Removed'; // Assign a value to message
-      await loadSavedMovies();
     }
+    notifyListeners();
+    await loadSavedMovies();
     notifyListeners();
 
 

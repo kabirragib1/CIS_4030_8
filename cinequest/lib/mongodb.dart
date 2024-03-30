@@ -23,12 +23,22 @@ class MongoDatabase {
     return user;
   }
 
-  // Add a movie to the user's favorites
-  static Future<void> addFavoriteMovie(String userEmail, int movieId) async {
+  // Method to add a favorite movie by movie ID
+  static Future<void> addFavoriteMovieById(String userEmail, int movieId) async {
     var collection = db?.collection(FAVORITES_COLLECTION_NAME);
     final document = {
       'userEmail': userEmail,
       'movieId': movieId
+    };
+    await collection?.insertOne(document);
+  }
+
+// Method to add a favorite movie by movie data
+  static Future<void> addFavoriteMovieByData(String userEmail, Map<String, dynamic> movieData) async {
+    var collection = db?.collection(FAVORITES_COLLECTION_NAME);
+    final document = {
+      'userEmail': userEmail,
+      ...movieData
     };
     await collection?.insertOne(document);
   }
@@ -46,5 +56,27 @@ class MongoDatabase {
     var collection = db?.collection(FAVORITES_COLLECTION_NAME);
     await collection?.deleteOne({'userEmail': userEmail, 'movieId': movieId});
   }
+
+  static Future<void> removeFavoriteMovieByData(String userEmail, Map<String, dynamic> movieData) async {
+    var collection = db?.collection(FAVORITES_COLLECTION_NAME);
+    final document = {
+      'userEmail': userEmail,
+      ...movieData
+    };
+    await collection?.deleteOne(document);
+  }
+
+  static Future<bool> updateUserPassword(String email, String username, String newPassword) async {
+    var collection = db?.collection(COLLECTION_NAME);
+    // First, check if a user with the given email and username exists
+    final user = await collection?.findOne(where.eq('email', email).eq('username', username));
+    if (user != null) {
+      // If the user exists, update the password
+      await collection?.updateOne(where.id(user['_id']), modify.set('password', newPassword));
+      return true; // Return true to indicate success
+    }
+    return false; // Return false if no user was found
+  }
+
 
 }

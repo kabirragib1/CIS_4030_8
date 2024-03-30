@@ -1,7 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:cinequest/home_screen.dart';
+import 'package:cinequest/mongodb.dart'; // Ensure this is correctly imported to use MongoDatabase
 
-class ForgotPasswordScreen extends StatelessWidget {
+class ForgotPasswordScreen extends StatefulWidget {
+  @override
+  _ForgotPasswordScreenState createState() => _ForgotPasswordScreenState();
+}
+
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
+  // TextEditingController instances for each input field
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _newPasswordController = TextEditingController();
+  final TextEditingController _reNewPasswordController = TextEditingController();
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _usernameController.dispose();
+    _newPasswordController.dispose();
+    _reNewPasswordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,21 +57,37 @@ class ForgotPasswordScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  _buildTextField('ENTER YOUR EMAIL'),
+                  _buildTextField('ENTER YOUR EMAIL', controller: _emailController),
                   SizedBox(height: 20),
-                  _buildTextField('ENTER YOUR USERNAME', obscureText: true),
+                  _buildTextField('ENTER YOUR USERNAME', controller: _usernameController),
                   SizedBox(height: 20),
-                  _buildTextField('ENTER NEW PASSWORD', obscureText: true),
+                  _buildTextField('ENTER NEW PASSWORD', controller: _newPasswordController, obscureText: true),
                   SizedBox(height: 20),
-                  _buildTextField('RE-ENTER NEW PASSWORD', obscureText: true),
+                  _buildTextField('RE-ENTER NEW PASSWORD', controller: _reNewPasswordController, obscureText: true),
                   SizedBox(height: 40),
                   ElevatedButton(
-                    onPressed: () {
-                      // Logic to handle the password reset
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()),
+                    onPressed: () async {
+                      // Implement the logic for updating the password here
+                      if (_newPasswordController.text != _reNewPasswordController.text) {
+                        // Show an alert if the passwords do not match
+                        _showAlert('Error', 'The passwords do not match.');
+                        return;
+                      }
+                      final success = await MongoDatabase.updateUserPassword(
+                        _emailController.text,
+                        _usernameController.text,
+                        _newPasswordController.text,
                       );
+                      if (success) {
+                        // Navigate to home screen or show a success message
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomeScreen()),
+                        );
+                      } else {
+                        // Show an error message
+                        _showAlert('Error', 'Failed to update the password. Please check your credentials.');
+                      }
                     },
                     style: ElevatedButton.styleFrom(
                       minimumSize: Size(300, 50),
@@ -66,7 +103,7 @@ class ForgotPasswordScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildTextField(String label, {bool obscureText = false}) {
+  Widget _buildTextField(String label, {bool obscureText = false, required TextEditingController controller}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -79,12 +116,29 @@ class ForgotPasswordScreen extends StatelessWidget {
         ),
         SizedBox(height: 8),
         TextFormField(
+          controller: controller,
           obscureText: obscureText,
           decoration: InputDecoration(
             border: OutlineInputBorder(),
           ),
         ),
       ],
+    );
+  }
+
+  void _showAlert(String title, String message) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(title),
+        content: Text(message),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: Text('OK'),
+          ),
+        ],
+      ),
     );
   }
 }
