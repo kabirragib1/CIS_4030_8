@@ -38,6 +38,7 @@ class TopRatedMoviesSlider extends StatelessWidget {
                             movie_release_date: top_rated_movie.movie_release_date,
                             movie_vote_avg: top_rated_movie.movie_vote_avg,
                             movieId: top_rated_movie.id,
+                            movie_original_title: top_rated_movie.movie_original_title,
                           ),
                         ),
                       );

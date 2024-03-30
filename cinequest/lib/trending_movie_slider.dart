@@ -79,7 +79,8 @@ class _TrendingMovieSliderState extends State<TrendingMovieSlider> {
                                       trendingMovie.movie_release_date,
                                   movie_vote_avg:
                                       trendingMovie.movie_vote_avg,
-                                  movieId: trendingMovie.id
+                                  movieId: trendingMovie.id,
+                                  movie_original_title: trendingMovie.movie_original_title,
                                   
                                 )));
                   },

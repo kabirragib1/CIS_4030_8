@@ -38,7 +38,8 @@ class NowPlayingMoviesSlider extends StatelessWidget {
                             movie_synopsis: now_playing_movie.movie_synopsis,
                             movie_release_date: now_playing_movie.movie_release_date,
                             movie_vote_avg: now_playing_movie.movie_vote_avg,
-                            movieId: now_playing_movie.id
+                            movieId: now_playing_movie.id,
+                            movie_original_title: now_playing_movie.movie_original_title,
                           ),
                         ),
                       );

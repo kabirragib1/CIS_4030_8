@@ -19,13 +19,14 @@ class MoviePage extends StatefulWidget {
 
   final String movie_image_path;
   final String movie_title;
+  final String movie_original_title;
   final String movie_synopsis;
   final String movie_release_date;
   final double movie_vote_avg;
   final int movieId;
   final String? userEmail;
 
-  MoviePage({required this.movie_image_path, required this.movie_title, required this.movie_synopsis, required this.movie_release_date, required this.movie_vote_avg, required this.movieId, this.userEmail,});
+  MoviePage({required this.movie_image_path, required this.movie_title, required this.movie_synopsis, required this.movie_release_date, required this.movie_vote_avg, required this.movieId, required this.movie_original_title, this.userEmail});
 
 
   @override
@@ -482,9 +483,8 @@ class _MoviePageState extends State<MoviePage> {
                       onPressed: () {
                         final movie = Movie(
                           widget.movie_title,
-                          '',
                           widget.movie_image_path,
-                          '',
+                          widget.movie_original_title,
                           widget.movie_synopsis,
                           widget.movie_release_date,
                           widget.movie_vote_avg,
@@ -509,9 +509,8 @@ class _MoviePageState extends State<MoviePage> {
                       onPressed: () {
                         final movie = Movie(
                           widget.movie_title,
-                          '',
                           widget.movie_image_path,
-                          '',
+                          widget.movie_original_title,
                           widget.movie_synopsis,
                           widget.movie_release_date,
                           widget.movie_vote_avg,
