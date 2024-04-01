@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:cinequest/home_screen.dart'; // Ensure this is the correct path to your HomeScreen
 
 class SignTransition extends StatefulWidget {
+  final String userEmail;
+  SignTransition({Key? key, required this.userEmail}) : super(key: key);
   @override
   _SignTransitionState createState() => _SignTransitionState();
 }
@@ -15,7 +17,7 @@ class _SignTransitionState extends State<SignTransition> {
     Future.delayed(Duration(seconds: 5), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
+        MaterialPageRoute(builder: (context) => HomeScreen(userEmail: widget.userEmail)),
       );
     });
   }

@@ -24,8 +24,6 @@ R
 F
 cinequest/pubspec.yaml,f\e\fe5f736da7edeb517bd0a5f238331806a8691825
 O
-cinequest/lib/movie_review.dart,e\2\e285e6989084897f103304f34fa842ccd837cddd
-O
 cinequest/lib/view_reviews.dart,6\3\6391b14c1b727528c598e952ce441295a4410f1a
 X
 (cinequest/lib/trending_movie_slider.dart,4\2\42e31b9e34d7543eadeae5c242099e8d33688a96

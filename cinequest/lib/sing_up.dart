@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:cinequest/home_screen.dart';
 import 'package:cinequest/mongodb.dart'; // Ensure this import points to your MongoDB utility class
 import 'package:cinequest/sign_quiz.dart';
+import 'package:provider/provider.dart';
+
+import 'movie_model.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -125,7 +128,11 @@ class _SignUpState extends State<SignUp> {
     });
 
     // Navigate to the next screen
-    Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpQuiz()));
+    Provider.of<MovieModel>(context, listen: false).setUserEmail(email);
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => SignUpQuiz(userEmail: email)),
+    );
   }
 
   void _showAlertDialog(BuildContext context, String message) {

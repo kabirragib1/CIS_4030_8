@@ -46,6 +46,8 @@ class MovieModel extends ChangeNotifier{
   List<MovieWatchCountry> movie_watch_country_data = [];
   List<MovieWatchCountry> get get_all_countries => movie_watch_country_data;
 
+
+
   void loadSavedMovies() async {
     try {
       // Retrieve the list of favorite movies as a list of maps

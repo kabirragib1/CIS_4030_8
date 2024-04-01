@@ -3,6 +3,8 @@ import 'package:cinequest/home_screen.dart'; // Import the HomeScreen widget
 import 'package:cinequest/sign_transition.dart'; // Import the Transition widget
 
 class SignUpQuiz extends StatefulWidget {
+  final String userEmail;
+  SignUpQuiz({Key? key, required this.userEmail}) : super(key: key);
   @override
   _SignUpQuizState createState() => _SignUpQuizState();
 }
@@ -75,13 +77,13 @@ class _SignUpQuizState extends State<SignUpQuiz> {
             ),
             SizedBox(height: 10),
             Padding(
-              padding: EdgeInsets.only(bottom: 20), // Adjust the value to your preference
+              padding: EdgeInsets.only(bottom: 20),
               child: ElevatedButton(
                 onPressed: () {
                   // Define what happens when the button is pressed
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => SignTransition()),
+                    MaterialPageRoute(builder: (context) => SignTransition(userEmail: widget.userEmail)),
                   );
                 },
                 style: ElevatedButton.styleFrom(

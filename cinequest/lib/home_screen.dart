@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
           filterQuality: FilterQuality.high,
         ),
         centerTitle: true,
-       actions: [
+        actions: [
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () {
@@ -49,7 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
         ],
-      ), 
+      ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: Padding (
@@ -61,37 +61,36 @@ class _HomeScreenState extends State<HomeScreen> {
                 'Trending Movies',
                 style: GoogleFonts.quicksand(fontSize: 25, fontWeight: FontWeight.w500),
               ),
-            const SizedBox(height: 35),
-            const TrendingMovieSlider(),
-            const SizedBox(height: 35),
-            Text(
-              'Top Rated Movies',
-              style: GoogleFonts.quicksand(fontSize: 25, fontWeight: FontWeight.w500)
-            ),
-            const SizedBox(height: 35),
-            // list of scrollable widgets 
+              const SizedBox(height: 35),
+              const TrendingMovieSlider(),
+              const SizedBox(height: 35),
+              Text(
+                  'Top Rated Movies',
+                  style: GoogleFonts.quicksand(fontSize: 25, fontWeight: FontWeight.w500)
+              ),
+              const SizedBox(height: 35),
+              // list of scrollable widgets
               TopRatedMoviesSlider(userEmail: widget.userEmail),
               const SizedBox(height: 35),
-            Text(
-              'Upcoming Movies',
-              style: GoogleFonts.quicksand(fontSize: 25, fontWeight: FontWeight.w500)
-            ),
-            const SizedBox(height: 35),
-            UpcomingMoviesSlider(),
-            const SizedBox(height: 35),
-            Text(
-              'Now Playing Movies',
-              style: GoogleFonts.quicksand(fontSize: 25, fontWeight: FontWeight.w500)
-            ),
-            const SizedBox(height: 35),
-            NowPlayingMoviesSlider(),
-          ],
+              Text(
+                  'Upcoming Movies',
+                  style: GoogleFonts.quicksand(fontSize: 25, fontWeight: FontWeight.w500)
+              ),
+              const SizedBox(height: 35),
+              UpcomingMoviesSlider(),
+              const SizedBox(height: 35),
+              Text(
+                  'Now Playing Movies',
+                  style: GoogleFonts.quicksand(fontSize: 25, fontWeight: FontWeight.w500)
+              ),
+              const SizedBox(height: 35),
+              NowPlayingMoviesSlider(),
+            ],
+          ),
         ),
       ),
-      ),
-      // drawer 
+      // drawer
       drawer: AppDrawer(),
     );
   }
 }
-
