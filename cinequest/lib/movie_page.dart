@@ -291,7 +291,7 @@ class _MoviePageState extends State<MoviePage> {
                             itemBuilder: (context, index) {
                               return Container(
                                 margin: EdgeInsets.all(12.0),
-                                color:  Color.fromARGB(255, 144, 90, 10),
+                                color:  Color.fromARGB(255, 255, 255, 255),
                                 child: ListTile(
                                   leading: 
                                   film_companies[index].logo_path != '' ?
@@ -305,8 +305,8 @@ class _MoviePageState extends State<MoviePage> {
                                       fit: BoxFit.contain,
                                     )
                                   )
-                                  : Icon(Icons.circle, size: 15.0),
-                                  title: Text('${film_companies[index].name}', softWrap: true, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal))
+                                  : Icon(Icons.circle, size: 15.0, color: Color.fromARGB(255, 0, 0, 0)),
+                                  title: Text('${film_companies[index].name}', softWrap: true, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal, color: Color.fromARGB(255, 0, 0, 0)))
                                 )
                               );
                             }
@@ -421,9 +421,9 @@ class _MoviePageState extends State<MoviePage> {
                                     itemBuilder: (context, streaming_service_index) {
                                       return Container(
                                         margin: EdgeInsets.all(12.0),
-                                        color:  Color.fromARGB(255, 144, 90, 10),
+                                        color:  Color.fromARGB(255, 255, 255, 255),
                                         child:  ListTile(
-                                          title: Text(film_availability[country_index].streaming_services[streaming_service_index].provider_name),
+                                          title: Text(film_availability[country_index].streaming_services[streaming_service_index].provider_name, style: TextStyle(color: Color.fromARGB(255, 0, 0, 0))),
                                           leading: Image.network(
                                             height: 75,
                                             width: 50,
@@ -467,7 +467,7 @@ class _MoviePageState extends State<MoviePage> {
                       onPressed: (){
                         Navigator.push(context,MaterialPageRoute(builder: (context) =>  ViewReviewPage(movie_image_path: widget.movie_image_path, movie_title: widget.movie_title, movie_vote_avg: widget.movie_vote_avg, movieId: widget.movieId)));
                       },
-                      child: const Text('VIEW REVIEWS', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold)),
+                      child: const Text('VIEW REVIEWS', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 0, 0, 0))),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color.fromARGB(255, 250, 178, 54),
                         foregroundColor: Colors.white,
@@ -494,7 +494,7 @@ class _MoviePageState extends State<MoviePage> {
                       },
                       child: Text(
                         'SAVE MOVIE',
-                        style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 0, 0, 0)),
                       ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color.fromARGB(255, 250, 178, 54),
@@ -520,7 +520,7 @@ class _MoviePageState extends State<MoviePage> {
                       },
                       child: Text(
                         'UNLIKE MOVIE',
-                        style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 0, 0, 0)),
                       ),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color.fromARGB(255, 250, 178, 54),
