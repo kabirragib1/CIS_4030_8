@@ -156,10 +156,10 @@ class MovieModel extends ChangeNotifier{
         final List<dynamic> data = jsonDecode(response.body)['results'];
         return data.map((json) => Movie.fromJson(json)).toList();
       } else {
-        throw Exception('Failed to load movies by genre');
+        throw Exception('Failed to load movie');
       }
     } catch (e) {
-      throw Exception('Error fetching movies by genre: $e');
+      throw Exception('Error fetching movie: $e');
     }
   }
 

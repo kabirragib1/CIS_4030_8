@@ -178,65 +178,64 @@ class _MoviePageState extends State<MoviePage> {
               child: Column(
                   children: [
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                            height: 300,
-                            width: 200,
-                            child: Image.network(
-                                filterQuality: FilterQuality.high,
-                                fit: BoxFit.cover,
-                                '${Constants.image_path}${widget.movie_image_path}'
-                            )
-                        ),
-                        Flexible(
-                            child: Padding(
-                              padding: EdgeInsets.all(10.0),
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    const Text(
-                                      'Movie Title: ',
-                                      style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      widget.movie_title,
-                                      style: TextStyle(fontSize: 20.0),
-                                    ),
-                                    const SizedBox(height: 25),
-                                    const Text(
-                                      'Director: ',
-                                      style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Text(
-                                      film_crew.indexWhere((crew) => crew.job == ('Director')) >= 0 
-                                      ? film_crew[film_crew.indexWhere((crew) => crew.job == ('Director'))].name
-                                      : 'TBD',
-                                      style: TextStyle(fontSize: 20.0),
-                                    ),
-                                    const SizedBox(height: 25),
-                                    const Text(
-                                      'Release Date: ',
-                                      style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-                                    ),
-                                    SizedBox(height: 8),
-                                    Text(
-                                      widget.movie_release_date,
-                                      style: TextStyle(fontSize: 20.0),
-                                    ),
-                                    // Text('Duration: ', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                                    // SizedBox(height: 25),
-                                    // Text('Studio: ', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                                    // SizedBox(height: 25),
-                                    // Text('Box Office: ', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                                  ]
-                              ),
-                            )
-                        ),
-                      ],
-                    ),
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    Padding(
+      padding: const EdgeInsets.only(top: 18.0), // Add padding to move the image down
+      child: SizedBox(
+        height: 300,
+        width: 200,
+        child: Image.network(
+          filterQuality: FilterQuality.high,
+          fit: BoxFit.cover,
+          '${Constants.image_path}${widget.movie_image_path}'
+        ),
+      ),
+    ),
+    Expanded(
+      child: Padding(
+        padding: EdgeInsets.all(10.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Movie Title: ',
+              style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              widget.movie_title,
+              style: TextStyle(fontSize: 20.0),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Director: ',
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              film_crew.indexWhere((crew) => crew.job == ('Director')) >= 0 
+              ? film_crew[film_crew.indexWhere((crew) => crew.job == ('Director'))].name
+              : 'TBD',
+              style: TextStyle(fontSize: 20.0),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Release Date: ',
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 8),
+            Text(
+              widget.movie_release_date,
+              style: TextStyle(fontSize: 20.0),
+            ),
+          ]
+        ),
+      )
+    ),
+  ],
+),
+
                     const Divider(
                       thickness: 3.0,
                       indent: 10.0,
