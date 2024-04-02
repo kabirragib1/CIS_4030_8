@@ -17,6 +17,7 @@ import 'mongodb.dart';
 // References: https://dart.dev/codelabs/async-await
 // References: https://medium.com/@fakgun/date-and-time-in-flutter-getting-master-tips-and-tricks-7d5667aee966
 // References: https://api.flutter.dev/flutter/dart-core/DateTime/toIso8601String.html
+// References: https://developer.themoviedb.org/reference/intro/getting-started
 
 class MovieModel extends ChangeNotifier{
   String _userEmail = '';
