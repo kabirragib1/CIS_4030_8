@@ -15,6 +15,15 @@ import 'dart:convert';
 import 'package:cinequest/movie.dart';
 import 'mongodb.dart';
 
+// References: https://www.bezkoder.com/dart-flutter-parse-json-string-array-to-object-list/#DartFlutter_parse_array_of_JSON_objects_into_List
+// References: https://blog.logrocket.com/how-parse-json-strings-flutter/
+// References: https://medium.com/codechai/provider-state-management-in-flutter-d453e73537c5
+// References: https://docs.flutter.dev/cookbook/networking/fetch-data
+// References: https://medium.com/@rijalprabesh145/fetching-data-from-api-http-get-request-in-flutter-7da19389651d
+// References: https://dart.dev/codelabs/async-await
+// References: https://medium.com/@fakgun/date-and-time-in-flutter-getting-master-tips-and-tricks-7d5667aee966
+// References: https://api.flutter.dev/flutter/dart-core/DateTime/toIso8601String.html
+
 class MoviePage extends StatefulWidget {
 
   final String movie_image_path;
@@ -178,359 +187,358 @@ class _MoviePageState extends State<MoviePage> {
               child: Column(
                   children: [
                     Row(
-  crossAxisAlignment: CrossAxisAlignment.start,
-  children: [
-    Padding(
-      padding: const EdgeInsets.only(top: 18.0), // Add padding to move the image down
-      child: SizedBox(
-        height: 300,
-        width: 200,
-        child: Image.network(
-          filterQuality: FilterQuality.high,
-          fit: BoxFit.cover,
-          '${Constants.image_path}${widget.movie_image_path}'
-        ),
-      ),
-    ),
-    Expanded(
-      child: Padding(
-        padding: EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Movie Title: ',
-              style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              widget.movie_title,
-              style: TextStyle(fontSize: 20.0),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'Director: ',
-              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              film_crew.indexWhere((crew) => crew.job == ('Director')) >= 0 
-              ? film_crew[film_crew.indexWhere((crew) => crew.job == ('Director'))].name
-              : 'TBD',
-              style: TextStyle(fontSize: 20.0),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'Release Date: ',
-              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 8),
-            Text(
-              widget.movie_release_date,
-              style: TextStyle(fontSize: 20.0),
-            ),
-          ]
-        ),
-      )
-    ),
-  ],
-),
-
-                    const Divider(
-                      thickness: 3.0,
-                      indent: 10.0,
-                      endIndent: 10.0,
-                      color: Colors.white,
-                      height: 15.0,
-                    ),
-                    const Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child:  Text('SYNOPSIS:', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                          )
-                        ]
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: Text(widget.movie_synopsis, softWrap: true, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal)),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 18.0), // Add padding to move the image down
+                        child: SizedBox(
+                          height: 300,
+                          width: 200,
+                          child: Image.network(
+                            filterQuality: FilterQuality.high,
+                            fit: BoxFit.cover,
+                            '${Constants.image_path}${widget.movie_image_path}'
                           ),
                         ),
-                      ],
-                    ),
-                    const Divider(
-                      thickness: 3.0,
-                      indent: 10.0,
-                      endIndent: 10.0,
-                      color: Colors.white,
-                      height: 15.0,
-                    ),
-                    const Row (
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Movie Title: ',
+                                style: TextStyle(fontSize: 22.0, fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                widget.movie_title,
+                                style: TextStyle(fontSize: 20.0),
+                              ),
+                              const SizedBox(height: 8),
+                              const Text(
+                                'Director: ',
+                                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 8),
+                              Text(
+                                film_crew.indexWhere((crew) => crew.job == ('Director')) >= 0 
+                                ? film_crew[film_crew.indexWhere((crew) => crew.job == ('Director'))].name
+                                : 'TBD',
+                                style: TextStyle(fontSize: 20.0),
+                              ),
+                              const SizedBox(height: 8),
+                              const Text(
+                                'Release Date: ',
+                                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                widget.movie_release_date,
+                                style: TextStyle(fontSize: 20.0),
+                              ),
+                            ]
+                          ),
+                        )
+                      ),
+                    ],
+                  ),
+                  const Divider(
+                    thickness: 3.0,
+                    indent: 10.0,
+                    endIndent: 10.0,
+                    color: Colors.white,
+                    height: 15.0,
+                  ),
+                  const Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
                           padding: EdgeInsets.all(10.0),
-                          child:  Text('PRODUCTION COMPANIES:', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                        )
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container( 
-                          height: 150, 
-                          // color:  Color.fromARGB(255, 144, 90, 10),
-                          child: ListView.builder(
-                            itemCount: film_companies.length,
-                            itemBuilder: (context, index) {
-                              return Container(
-                                margin: EdgeInsets.all(12.0),
-                                color:  Color.fromARGB(255, 255, 255, 255),
-                                child: ListTile(
-                                  leading: 
-                                  film_companies[index].logo_path != '' ?
-                                  Container (
-                                    width: 200,
-                                    height: 200,
-                                    padding: EdgeInsets.all(10.0),
-                                    child: Image.network(
-                                      filterQuality: FilterQuality.high,
-                                      '${Constants.image_path}${film_companies[index].logo_path}',
-                                      fit: BoxFit.contain,
-                                    )
-                                  )
-                                  : Icon(Icons.circle, size: 15.0, color: Color.fromARGB(255, 0, 0, 0)),
-                                  title: Text('${film_companies[index].name}', softWrap: true, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal, color: Color.fromARGB(255, 0, 0, 0)))
-                                )
-                              );
-                            }
-                          )
+                          child:  Text('SYNOPSIS:', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
                         )
                       ]
-                    ),
-                    const Divider(
-                      thickness: 3.0,
-                      indent: 10.0,
-                      endIndent: 10.0,
-                      color: Colors.white,
-                      height: 15.0,
-                    ),
-                     const Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child:  Text('CAST:', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                          )
-                        ]
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container( 
-                          height: 250, 
-                          child: ListView.builder(
-                            itemCount: film_cast.length,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                leading: Icon(Icons.circle, size: 15.0),
-                                title: film_cast[index].character == ""  
-                                ? Text('${film_cast[index].name}', softWrap: true, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal))
-                                : Text('${film_cast[index].name} as ${film_cast[index].character}', softWrap: true, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal))
-                              );
-                            },
-                          )
-                        )
-                      ]
-                    ),
-                    const Divider(
-                      thickness: 3.0,
-                      indent: 10.0,
-                      endIndent: 10.0,
-                      color: Colors.white,
-                      height: 15.0,
-                    ),
-                    const Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child:  Text('GENRES:', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                          )
-                        ]
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container( 
-                          height: 100, 
-                          child: ListView.builder(
-                            itemCount: film_genres.length,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                leading: Icon(Icons.circle, size: 15.0),
-                                title: Text('${film_genres[index].name}', softWrap: true, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal))
-                              );
-                            },
-                          )
-                        )
-                      ]
-                    ),
-                    const Divider(
-                      thickness: 3.0,
-                      indent: 10.0,
-                      endIndent: 10.0,
-                      color: Colors.white,
-                      height: 15.0,
-                    ),
-                    const Row (
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Padding(
                           padding: EdgeInsets.all(10.0),
-                          child:  Text('WHERE TO WATCH:', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
-                        )
-                      ],
-                    ),
-                    film_availability.isNotEmpty
-                    ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container( 
-                          height: 250, 
-                          child: ListView.builder(
-                            itemCount: film_availability.length,
-                            shrinkWrap: true,
-                            itemBuilder: (context, country_index) {
-                              return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  movie_watch_country_data.indexWhere((country) => country.country_short_form == (film_availability[country_index].country_short_form)) >= 0
-                                  ? Text(movie_watch_country_data[movie_watch_country_data.indexWhere((country) => country.country_short_form == (film_availability[country_index].country_short_form))].english_name, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal))
-                                  : Text(film_availability[country_index].country_short_form, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal)),
-                                  ListView.builder(
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemCount: film_availability[country_index].streaming_services.length,
-                                    itemBuilder: (context, streaming_service_index) {
-                                      return Container(
-                                        margin: EdgeInsets.all(12.0),
-                                        color:  Color.fromARGB(255, 255, 255, 255),
-                                        child:  ListTile(
-                                          title: Text(film_availability[country_index].streaming_services[streaming_service_index].provider_name, style: TextStyle(color: Color.fromARGB(255, 0, 0, 0))),
-                                          leading: Image.network(
-                                            height: 75,
-                                            width: 50,
-                                            filterQuality: FilterQuality.high,
-                                            '${Constants.image_path}${film_availability[country_index].streaming_services[streaming_service_index].logo_path}',
-                                            fit: BoxFit.cover,
-                                          ),
-                                          onTap: () {}
-                                        ) ,
-                                      );
-                                    },
-                                  ),
-                                  const SizedBox(height: 25)
-                                ],
-                              );
-                            },
-                          ),
+                          child: Text(widget.movie_synopsis, softWrap: true, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal)),
                         ),
-                      ],
-                    )
-                    : Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded( // Ensure the text takes available space
-                          child: Padding(
-                            padding: EdgeInsets.all(12.0),
-                            child: Text('Currently No Streaming Service Has ${widget.movie_title} Available. Please Visit Your Local Theatre.', softWrap: true, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal)),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Divider(
-                      thickness: 3.0,
-                      indent: 10.0,
-                      endIndent: 10.0,
-                      color: Colors.white,
-                      height: 15.0,
-                    ),
-                    const SizedBox(height: 15),
-                    ElevatedButton(
-                      onPressed: (){
-                        Navigator.push(context,MaterialPageRoute(builder: (context) =>  ViewReviewPage(movie_image_path: widget.movie_image_path, movie_title: widget.movie_title, movie_vote_avg: widget.movie_vote_avg, movieId: widget.movieId)));
-                      },
-                      child: const Text('VIEW REVIEWS', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 0, 0, 0))),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 250, 178, 54),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50), // Rounded corners
-                        ),
-                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Button padding
+                      ),
+                    ],
+                  ),
+                  const Divider(
+                    thickness: 3.0,
+                    indent: 10.0,
+                    endIndent: 10.0,
+                    color: Colors.white,
+                    height: 15.0,
+                  ),
+                  const Row (
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child:  Text('PRODUCTION COMPANIES:', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
                       )
-                    ),
-                    const SizedBox(height: 15),
-                    saved_movies.indexWhere((movie) => movie.id == widget.movieId) < 0 
-                    ? ElevatedButton(
-                      onPressed: () {
-                        final movie = Movie(
-                          widget.movie_title,
-                          widget.movie_image_path,
-                          widget.movie_original_title,
-                          widget.movie_synopsis,
-                          widget.movie_release_date,
-                          widget.movie_vote_avg,
-                          widget.movieId
-                        );
-                        Provider.of<MovieModel>(context, listen: false).toggleFavorite(context, movie);
-                      },
-                      child: Text(
-                        'SAVE MOVIE',
-                        style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 0, 0, 0)),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 250, 178, 54),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50), // Rounded corners
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container( 
+                        height: 150, 
+                        // color:  Color.fromARGB(255, 144, 90, 10),
+                        child: ListView.builder(
+                          itemCount: film_companies.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: EdgeInsets.all(12.0),
+                              color:  Color.fromARGB(255, 255, 255, 255),
+                              child: ListTile(
+                                leading: 
+                                film_companies[index].logo_path != '' ?
+                                Container (
+                                  width: 200,
+                                  height: 200,
+                                  padding: EdgeInsets.all(10.0),
+                                  child: Image.network(
+                                    filterQuality: FilterQuality.high,
+                                    '${Constants.image_path}${film_companies[index].logo_path}',
+                                    fit: BoxFit.contain,
+                                  )
+                                )
+                                : Icon(Icons.circle, size: 15.0, color: Color.fromARGB(255, 0, 0, 0)),
+                                title: Text('${film_companies[index].name}', softWrap: true, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal, color: Color.fromARGB(255, 0, 0, 0)))
+                              )
+                            );
+                          }
+                        )
+                      )
+                    ]
+                  ),
+                  const Divider(
+                    thickness: 3.0,
+                    indent: 10.0,
+                    endIndent: 10.0,
+                    color: Colors.white,
+                    height: 15.0,
+                  ),
+                   const Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child:  Text('CAST:', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                        )
+                      ]
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container( 
+                        height: 250, 
+                        child: ListView.builder(
+                          itemCount: film_cast.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              leading: Icon(Icons.circle, size: 15.0),
+                              title: film_cast[index].character == ""  
+                              ? Text('${film_cast[index].name}', softWrap: true, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal))
+                              : Text('${film_cast[index].name} as ${film_cast[index].character}', softWrap: true, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal))
+                            );
+                          },
+                        )
+                      )
+                    ]
+                  ),
+                  const Divider(
+                    thickness: 3.0,
+                    indent: 10.0,
+                    endIndent: 10.0,
+                    color: Colors.white,
+                    height: 15.0,
+                  ),
+                  const Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child:  Text('GENRES:', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                        )
+                      ]
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container( 
+                        height: 100, 
+                        child: ListView.builder(
+                          itemCount: film_genres.length,
+                          itemBuilder: (context, index) {
+                            return ListTile(
+                              leading: Icon(Icons.circle, size: 15.0),
+                              title: Text('${film_genres[index].name}', softWrap: true, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal))
+                            );
+                          },
+                        )
+                      )
+                    ]
+                  ),
+                  const Divider(
+                    thickness: 3.0,
+                    indent: 10.0,
+                    endIndent: 10.0,
+                    color: Colors.white,
+                    height: 15.0,
+                  ),
+                  const Row (
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child:  Text('WHERE TO WATCH:', style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold)),
+                      )
+                    ],
+                  ),
+                  film_availability.isNotEmpty
+                  ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container( 
+                        height: 250, 
+                        child: ListView.builder(
+                          itemCount: film_availability.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, country_index) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                movie_watch_country_data.indexWhere((country) => country.country_short_form == (film_availability[country_index].country_short_form)) >= 0
+                                ? Text(movie_watch_country_data[movie_watch_country_data.indexWhere((country) => country.country_short_form == (film_availability[country_index].country_short_form))].english_name, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal))
+                                : Text(film_availability[country_index].country_short_form, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal)),
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: film_availability[country_index].streaming_services.length,
+                                  itemBuilder: (context, streaming_service_index) {
+                                    return Container(
+                                      margin: EdgeInsets.all(12.0),
+                                      color:  Color.fromARGB(255, 255, 255, 255),
+                                      child:  ListTile(
+                                        title: Text(film_availability[country_index].streaming_services[streaming_service_index].provider_name, style: TextStyle(color: Color.fromARGB(255, 0, 0, 0))),
+                                        leading: Image.network(
+                                          height: 75,
+                                          width: 50,
+                                          filterQuality: FilterQuality.high,
+                                          '${Constants.image_path}${film_availability[country_index].streaming_services[streaming_service_index].logo_path}',
+                                          fit: BoxFit.cover,
+                                        ),
+                                        onTap: () {}
+                                      ) ,
+                                    );
+                                  },
+                                ),
+                                const SizedBox(height: 25)
+                              ],
+                            );
+                          },
                         ),
-                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Button padding
                       ),
-                    ) 
-                    : ElevatedButton(
-                      onPressed: () {
-                        final movie = Movie(
-                          widget.movie_title,
-                          widget.movie_image_path,
-                          widget.movie_original_title,
-                          widget.movie_synopsis,
-                          widget.movie_release_date,
-                          widget.movie_vote_avg,
-                          widget.movieId
-                        );
-                        Provider.of<MovieModel>(context, listen: false).toggleFavorite(context, movie);
-                      },
-                      child: Text(
-                        'UNLIKE MOVIE',
-                        style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 0, 0, 0)),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 250, 178, 54),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(50), // Rounded corners
+                    ],
+                  )
+                  : Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded( // Ensure the text takes available space
+                        child: Padding(
+                          padding: EdgeInsets.all(12.0),
+                          child: Text('Currently No Streaming Service Has ${widget.movie_title} Available. Please Visit Your Local Theatre.', softWrap: true, style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.normal)),
                         ),
-                        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Button padding
                       ),
+                    ],
+                  ),
+                  const Divider(
+                    thickness: 3.0,
+                    indent: 10.0,
+                    endIndent: 10.0,
+                    color: Colors.white,
+                    height: 15.0,
+                  ),
+                  const SizedBox(height: 15),
+                  ElevatedButton(
+                    onPressed: (){
+                      Navigator.push(context,MaterialPageRoute(builder: (context) =>  ViewReviewPage(movie_image_path: widget.movie_image_path, movie_title: widget.movie_title, movie_vote_avg: widget.movie_vote_avg, movieId: widget.movieId)));
+                    },
+                    child: const Text('VIEW REVIEWS', style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 0, 0, 0))),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 250, 178, 54),
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50), // Rounded corners
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Button padding
+                    )
+                  ),
+                  const SizedBox(height: 15),
+                  saved_movies.indexWhere((movie) => movie.id == widget.movieId) < 0 
+                  ? ElevatedButton(
+                    onPressed: () {
+                      final movie = Movie(
+                        widget.movie_title,
+                        widget.movie_image_path,
+                        widget.movie_original_title,
+                        widget.movie_synopsis,
+                        widget.movie_release_date,
+                        widget.movie_vote_avg,
+                        widget.movieId
+                      );
+                      Provider.of<MovieModel>(context, listen: false).toggleFavorite(context, movie);
+                    },
+                    child: Text(
+                      'SAVE MOVIE',
+                      style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 0, 0, 0)),
                     ),
-                    const SizedBox(height: 15),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 250, 178, 54),
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50), // Rounded corners
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Button padding
+                    ),
+                  ) 
+                  : ElevatedButton(
+                    onPressed: () {
+                      final movie = Movie(
+                        widget.movie_title,
+                        widget.movie_image_path,
+                        widget.movie_original_title,
+                        widget.movie_synopsis,
+                        widget.movie_release_date,
+                        widget.movie_vote_avg,
+                        widget.movieId
+                      );
+                      Provider.of<MovieModel>(context, listen: false).toggleFavorite(context, movie);
+                    },
+                    child: Text(
+                      'UNLIKE MOVIE',
+                      style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold, color: Color.fromARGB(255, 0, 0, 0)),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Color.fromARGB(255, 250, 178, 54),
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50), // Rounded corners
+                      ),
+                      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10), // Button padding
+                    ),
+                  ),
+                  const SizedBox(height: 15),
                     // const SizedBox(height: 15),
                     // Row(
                     //     mainAxisAlignment: MainAxisAlignment.center,

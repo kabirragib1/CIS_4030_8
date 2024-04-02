@@ -8,6 +8,16 @@ import 'package:http/http.dart' as http;
 
 import 'mongodb.dart';
 
+
+// References: https://www.bezkoder.com/dart-flutter-parse-json-string-array-to-object-list/#DartFlutter_parse_array_of_JSON_objects_into_List
+// References: https://blog.logrocket.com/how-parse-json-strings-flutter/
+// References: https://medium.com/codechai/provider-state-management-in-flutter-d453e73537c5
+// References: https://docs.flutter.dev/cookbook/networking/fetch-data
+// References: https://medium.com/@rijalprabesh145/fetching-data-from-api-http-get-request-in-flutter-7da19389651d
+// References: https://dart.dev/codelabs/async-await
+// References: https://medium.com/@fakgun/date-and-time-in-flutter-getting-master-tips-and-tricks-7d5667aee966
+// References: https://api.flutter.dev/flutter/dart-core/DateTime/toIso8601String.html
+
 class MovieModel extends ChangeNotifier{
   String _userEmail = '';
   List<Movie> _savedMovies = [];
