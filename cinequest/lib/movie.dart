@@ -17,13 +17,13 @@ class Movie {
 
   factory Movie.fromJson(Map<String, dynamic> json) {
     return Movie(
-      json['title'] as String,
-      json['poster_path'] as String,
-      json['original_title'] as String,
-      json['overview'] as String,
-      json['release_date'] as String,
-      json['vote_average'] as double,
-      json['id'] as int
+      json['title'] as String? ?? '',
+      json['poster_path'] as String? ?? '',
+      json['original_title'] as String? ?? '',
+      json['overview'] as String? ?? '',
+      json['release_date'] as String? ?? '',
+      json['vote_average'] as double? ?? 0.0,
+      json['id'] as int? ?? 0,
     );
   }
   Map<String, dynamic> toJson() {
@@ -39,4 +39,3 @@ class Movie {
   }
 
 }
-
