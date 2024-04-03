@@ -1,6 +1,8 @@
+import 'package:cinequest/movie_model.dart';
 import 'package:flutter/material.dart';
 import 'package:cinequest/home_screen.dart';
-import 'package:cinequest/mongodb.dart'; // Ensure this is correctly imported to use MongoDatabase
+import 'package:cinequest/mongodb.dart';
+import 'package:provider/provider.dart'; // Ensure this is correctly imported to use MongoDatabase
 
 class ForgotPasswordScreen extends StatefulWidget {
   @override
@@ -80,9 +82,10 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                       );
                       if (success) {
                         // Navigate to home screen or show a success message
+                        Provider.of<MovieModel>(context, listen: false).setUserEmail(_emailController.text);
                         Navigator.pushReplacement(
                           context,
-                          MaterialPageRoute(builder: (context) => HomeScreen()),
+                          MaterialPageRoute(builder: (context) => HomeScreen(userEmail: _emailController.text)),
                         );
                       } else {
                         // Show an error message
