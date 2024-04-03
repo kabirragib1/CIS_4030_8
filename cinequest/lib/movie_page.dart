@@ -301,8 +301,8 @@ class _MoviePageState extends State<MoviePage> {
                                   leading: 
                                   film_companies[index].logo_path != '' ?
                                   Container (
-                                    width: 200,
-                                    height: 200,
+                                    width: 175,
+                                    height: 175,
                                     padding: EdgeInsets.all(10.0),
                                     child: Image.network(
                                       filterQuality: FilterQuality.high,
