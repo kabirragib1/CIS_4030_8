@@ -3,6 +3,7 @@ import 'package:cinequest/movie.dart';
 import 'package:cinequest/movie_model.dart';
 import 'package:cinequest/movie_page.dart';
 import 'package:cinequest/constants.dart';
+import 'package:provider/provider.dart';
 
 class SearchScreen extends StatefulWidget {
   @override
@@ -10,13 +11,15 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  List<Movie> _searchResults = [];
   String _searchQuery = '';
   int? _selectedGenreId; // Define selectedGenreId variable
   String _searchType = 'Search By...'; // Default search type
 
   @override
   Widget build(BuildContext context) {
+    final moviesListModel = Provider.of<MovieModel>(context);
+    List<Movie> _searchResults = moviesListModel.get_searchResults;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -71,8 +74,8 @@ class _SearchScreenState extends State<SearchScreen> {
                onChanged: (value) {
                   setState(() {
                     _searchQuery = value;
-                    _searchMovies(value);
                   });
+                  _searchMovies(value);
                 },
                 decoration: InputDecoration(
                   hintText: 'Search By Movie Name...',
@@ -87,8 +90,8 @@ class _SearchScreenState extends State<SearchScreen> {
                 onChanged: (newValue) {
                    setState(() {
                      _selectedGenreId = newValue;
-                     _searchMovies(_searchQuery, _selectedGenreId);
                    });
+                    _searchMovies(_searchQuery, _selectedGenreId);
                 },
                 items: [
                   DropdownMenuItem<int>(
@@ -222,20 +225,14 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Future<void> _searchMovies(String query, [int? genreId]) async {
+void _searchMovies(String query, [int? genreId]) async {
     try {
-      List<Movie> searchResults = [];
+      final moviesListModel = Provider.of<MovieModel>(context, listen: false);
       if (genreId != null) {
-        // Implement logic to search movies by genre
-        searchResults = await MovieModel.searchMoviesByGenre(genreId);
+        moviesListModel.searchMoviesByGenre(genreId);
       } else {
-        // Existing logic to search by movie title
-        searchResults = await MovieModel.searchMovies(query);
+        moviesListModel.searchMoviesByName(query);
       }
-
-      setState(() {
-        _searchResults = searchResults;
-      });
     } catch (e) {
       print('Error searching movies: $e');
     }

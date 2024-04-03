@@ -21,7 +21,6 @@ import 'mongodb.dart';
 
 class MovieModel extends ChangeNotifier{
   String _userEmail = '';
-  List<Movie> _savedMovies = [];
   static const trending_movie_URL = 'https://api.themoviedb.org/3/trending/movie/day?api_key=${Constants.API_key}';
   static const top_rated_movie_URL = 'https://api.themoviedb.org/3/movie/top_rated?api_key=${Constants.API_key}';
   static const now_playing_movie_URL = 'https://api.themoviedb.org/3/movie/now_playing?api_key=${Constants.API_key}';
@@ -57,7 +56,8 @@ class MovieModel extends ChangeNotifier{
   List<MovieWatchCountry> movie_watch_country_data = [];
   List<MovieWatchCountry> get get_all_countries => movie_watch_country_data;
 
-
+  List<Movie> searchResults = [];
+  List<Movie> get get_searchResults => searchResults;
 
   void loadSavedMovies() async {
     try {
@@ -144,13 +144,14 @@ class MovieModel extends ChangeNotifier{
 
   }
 
-  static Future<List<Movie>> searchMoviesByGenre(int genreId) async {
+  void searchMoviesByGenre(int genreId) async {
     final String genreSearchUrl = 'https://api.themoviedb.org/3/discover/movie?api_key=${Constants.API_key}&with_genres=$genreId';
     try {
       final response = await http.get(Uri.parse(genreSearchUrl));
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body)['results'];
-        return data.map((json) => Movie.fromJson(json)).toList();
+        searchResults = data.map((json) => Movie.fromJson(json)).toList();
+        notifyListeners();
       } else {
         throw Exception('Failed to load movies by genre');
       }
@@ -159,13 +160,14 @@ class MovieModel extends ChangeNotifier{
     }
   }
 
-  static Future<List<Movie>> searchMoviesByName(String query) async {
+  void searchMoviesByName(String query) async {
     final String nameSearchUrl = 'https://api.themoviedb.org/3/search/movie?api_key=${Constants.API_key}&query=${query}';
     try {
       final response = await http.get(Uri.parse(nameSearchUrl));
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body)['results'];
-        return data.map((json) => Movie.fromJson(json)).toList();
+        searchResults = data.map((json) => Movie.fromJson(json)).toList();
+        notifyListeners();
       } else {
         throw Exception('Failed to load movie');
       }
@@ -274,23 +276,4 @@ class MovieModel extends ChangeNotifier{
     }
   }
 
-  // search functionality 
-  static Future<List<Movie>> searchMovies(String query) async {
-    final Set<int> addedMovieIds = {};
-    final List<Movie> searchResults = [];
-    try {
-      // fetch trending movies
-      final searchMovies = await searchMoviesByName(query);
-      for (final movie in searchMovies) {
-        if (!addedMovieIds.contains(movie.id) &&
-            movie.movie_title.toLowerCase().contains(query.toLowerCase())) {
-          searchResults.add(movie);
-          addedMovieIds.add(movie.id);
-        }
-      }
-      return searchResults;
-    } catch (e) {
-      throw Exception('Error searching movies: $e');
-    }
-  }
 }
